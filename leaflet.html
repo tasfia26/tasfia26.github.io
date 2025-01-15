@@ -3,44 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaflet Map - My Locations</title>
+    <title>Map of My Locations</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
             height: 600px;
-        }
-        .leaflet-popup-content {
-            font-size: 16px;
-            font-weight: bold;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <h1>My Locations on the Map</h1>
     <div id="map"></div>
-
+    
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script>
-        // Initialize the map
-        var map = L.map('map').setView([24.1155, 85.2355], 5); // Center the map between BYU and Bangladesh
+        var map = L.map('map').setView([40.2338, -111.6585], 12);  // Centered on BYU, Utah, USA
 
-        // Add Google Maps as the base map
-        L.tileLayer('https://{s}.googleapis.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-            attribution: '&copy; <a href="https://www.google.com/intl/en_US/help/terms_maps.html">Google</a>'
+        // Tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Add a marker for BYU, USA
-        var byuLocation = L.latLng(40.2338, -111.6585); // BYU, USA
+        // Add markers for BYU (Utah, USA) and Bangladesh
+        var byuLocation = [40.2338, -111.6585];
+        var bangladeshLocation = [23.685, 90.3563]; // Rough coordinates for Bangladesh
+
+        // Marker for BYU
         var byuMarker = L.marker(byuLocation).addTo(map);
-        byuMarker.bindPopup('<b>Brigham Young University (BYU), USA</b>');
+        byuMarker.bindPopup("<b>Brigham Young University (BYU), USA</b><br>My Current Location");
 
-        // Add a marker for Bangladesh
-        var bangladeshLocation = L.latLng(23.685, 90.3563); // Bangladesh
+        // Marker for Bangladesh
         var bangladeshMarker = L.marker(bangladeshLocation).addTo(map);
-        bangladeshMarker.bindPopup('<b>Bangladesh</b>');
+        bangladeshMarker.bindPopup("<b>Bangladesh</b><br>My Home Country");
 
-        // Zoom to show both locations
-        map.fitBounds([byuLocation, bangladeshLocation]);
+        // Add reverse geocoding to show location names on click
+        map.on('click', function(e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+            var popup = L.popup()
+                .setLatLng(e.latlng)
+                .setContent("You clicked the map at " + lat.toFixed(4) + ", " + lng.toFixed(4))
+                .openOn(map);
+
+            // Reverse geocoding using OpenStreetMap's Nominatim
+            var geocoder = L.Control.Geocoder.nominatim();
+            geocoder.reverse([lat, lng], map.options.crs.scale(map.getZoom()), function(results) {
+                var result = results && results[0];
+                if (result) {
+                    popup.setContent("You clicked at " + result.name);
+                }
+            });
+        });
     </script>
 </body>
 </html>
