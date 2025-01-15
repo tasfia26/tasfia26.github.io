@@ -18,18 +18,30 @@
             border-radius: 50%;
             width: 150px;
             height: 150px;
+            transition: transform 0.5s ease-in-out; /* Default transition for all images */
         }
+
+        /* Transition for 'your-picture.jpg' to make it larger with a different easing */
+        img#profile-picture {
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1); /* Custom cubic-bezier easing */
+        }
+
+        img#profile-picture:hover {
+            transform: scale(1.8); /* Scale up to 1.8 times */
+        }
+
         .interests img {
             width: 100px;
             height: 100px;
             margin: 10px;
             border: 2px solid #90caf9;
             border-radius: 10px;
-            transition: transform 0.5s ease-in-out; /* Set transition duration and easing */
+            transition: transform 0.3s ease-in-out; /* Transition for the small images */
         }
         .interests img:hover {
-            transform: scale(1.5); /* Make the image 1.5 times bigger */
+            transform: scale(1.1); /* Make the small images 1.1 times bigger */
         }
+
         h1, h2, h3 {
             color: #0d47a1;
         }
@@ -59,7 +71,7 @@
     <p>Semester: Winter - 2025</p>
    
     <h3>About Me</h3>
-    <img src="your-picture.jpg" alt="Your Picture">
+    <img id="profile-picture" src="your-picture.jpg" alt="Your Picture">
     <p>Hello! I am Tasfia and I am from Bangladesh. Presently, I am living in Utah, USA.  I am doing my Master's in Civil and Construction Engineering Department at Brigham Young University (BYU) under the supervision of Dr. Dan Ames. My favorite thing to do is to travel to new places and spend time with family, my cat, and friends. I am fond of watching sunrises and sunsets. Not to forget, I am a big foodie.</p>
 
     <h3>Things I’m Interested In</h3>
