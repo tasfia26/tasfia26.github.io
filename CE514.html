@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CE 514 Homepage</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Ensures no scrollbar */
+        }
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        h1, h2, h3 {
+            background: linear-gradient(45deg, #add8e6, #87ceeb);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-shadow: 0 0 5px black;
+            padding: 20px;
+        }
+        img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .interests {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .interests img {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border-radius: 10%;
+            transition: transform 0.3s;
+        }
+        .interests img:hover {
+            transform: scale(1.2);
+        }
+        a {
+            text-decoration: none;
+            color: #87ceeb;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #ffffff;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin: 5px 0;
+        }
+        ul li a {
+            display: inline-block;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        ul li a:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .separate-links {
+            margin-top: 30px;
+        }
+        .separate-links ul li a {
+            background: rgba(173, 216, 230, 0.3);
+            border: 1px solid #87ceeb;
+        }
+        .separate-links ul li a:hover {
+            background: rgba(173, 216, 230, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <video id="background-video" autoplay muted loop>
+        <source src="background-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="content">
+        <h1>Welcome to My Page!</h1>
+        <h2>Tasfia Mahjarin</h2>
+        <p>Course Name: Geospatial Software Development - CE 514</p>
+        <p>Semester: Winter - 2025</p>
+
+        <h3>About Me</h3>
+        <img src="your-picture.jpg" alt="Your Picture">
+        <p>Hello! I am Tasfia and I am from Bangladesh. Presently, I am living in Utah, USA. I am doing my Master's in Civil and Construction Engineering Department at Brigham Young University (BYU) under the supervision of Dr. Dan Ames. My favorite thing to do is to travel to new places and spend times with family, my cat, and friends. I am fond of watching sunrises and sunsets. Not to forget, I am a big foodie.</p>
+
+        <h3>Things I’m Interested In</h3>
+        <div class="interests">
+            <img src="Interest1.jpg" alt="Interest 1">
+            <img src="Interest2.jpg" alt="Interest 2">
+            <img src="Interest3.jpeg" alt="Interest 3">
+        </div>
+
+        <h3>Useful Links</h3>
+        <ul>
+            <li><a href="https://www.linkedin.com/in/tasfiamahjarin26" target="_blank">My LinkedIn</a></li>
+            <li><a href="https://github.com/tasfia26" target="_blank">My GitHub</a></li>
+            <li><a href="https://cce.byu.edu/" target="_blank">Civil and Construction Engineering Department (BYU)</a></li>
+            <li><a href="https://www.instagram.com/tasfia_mahjarin" target="_blank">My Instagram</a></li>
+        </ul>
+
+        <div class="separate-links">
+            <h3>Project Links</h3>
+            <ul>
+                <li><a href="leaflet.html" target="_blank">Leaflet Map Project</a></li>
+                <li><a href="another-project.html" target="_blank">Another Project</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
