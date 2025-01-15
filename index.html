@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name's Page</title>
+    <title>Welcome to My Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             text-align: center;
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            background: url('background-image.jpg') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
             padding: 0;
+            color: #333;
         }
         img {
             border-radius: 50%;
@@ -33,17 +35,27 @@
             color: white;
             padding: 10px;
             margin: 20px auto;
+            border: 2px dashed #fff;
             border-radius: 8px;
             display: inline-block;
+            background: linear-gradient(90deg, #42a5f5, #478ed1);
         }
         h1 {
-            background: linear-gradient(90deg, #2196f3, #21cbf3);
+            font-size: 2.5rem;
         }
         h2 {
-            background: linear-gradient(90deg, #4caf50, #81c784);
+            font-size: 2rem;
+            margin-top: 5px;
         }
-        h3 {
-            background: linear-gradient(90deg, #ff5722, #ff7043);
+        .about-heading {
+            position: relative;
+            color: white;
+            padding: 8px;
+            background: linear-gradient(90deg, #4caf50, #81c784);
+            border: 2px dashed #fff;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: -50px; /* Adjusted to overlap the picture */
         }
         a {
             text-decoration: none;
@@ -65,12 +77,12 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to My Page!</h1>
+    <h1>Welcome to My Page</h1>
     <h2>Tasfia Mahjarin</h2>
     <p>Course Name: Geospatial Software Development - CE 514</p>
     <p>Semester: Winter - 2025</p>
-   
-    <h3>About Me</h3>
+
+    <div class="about-heading">About Me</div>
     <img src="your-picture.jpg" alt="Your Picture">
     <p>Hello! I am Tasfia and I am from Bangladesh. Presently, I am living in Utah, USA.  I am doing my Master's in Civil and Construction Engineering Department at Brigham Young University (BYU) under the supervision of Dr. Dan Ames. My favorite thing to do is to travel to new places and spend times with family, my cat, and friends. I am fond of watching sunrises and sunsets. Not to forget, I am a big foodie.</p>
 
