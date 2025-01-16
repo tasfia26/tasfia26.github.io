@@ -7,39 +7,28 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
+            line-height: 1.8;
             text-align: center;
             background: url('background3.jpg') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
             padding: 0;
+            color: #212121; /* Darker color for body text */
+            font-size: 18px; /* Slightly larger text */
         }
         img {
             border-radius: 50%;
             width: 150px;
             height: 150px;
-            transition: transform 0.5s ease-in-out; /* Default transition for all images */
+            transition: transform 0.5s ease-in-out;
         }
 
-        /* Transition for 'your-picture.jpg' to make it larger with a different easing */
         img#profile-picture {
-            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1); /* Custom cubic-bezier easing */
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         img#profile-picture:hover {
-            transform: scale(1.8); /* Scale up to 1.8 times */
-        }
-
-        .interests img {
-            width: 100px;
-            height: 100px;
-            margin: 10px;
-            border: 2px solid #90caf9;
-            border-radius: 10px;
-            transition: transform 0.3s ease-in-out; /* Transition for the small images */
-        }
-        .interests img:hover {
-            transform: scale(1.1); /* Make the small images 1.1 times bigger */
+            transform: scale(1.8);
         }
 
         h1, h2, h3 {
@@ -60,7 +49,7 @@
             margin: 5px 0;
         }
         p {
-            color: #424242;
+            color: #212121; /* Ensure body text matches the darker theme */
         }
     </style>
 </head>
@@ -69,22 +58,15 @@
     <h2>Tasfia Mahjarin</h2>
     <p>Course Name: Geospatial Software Development - CE 514</p>
     <p>Semester: Winter - 2025</p>
-   
+
     <h3>About Me</h3>
     <img id="profile-picture" src="your-picture.jpg" alt="Your Picture">
-    <p>In this page, I will list all the things I will do in this CE-514 course and link down the webpages in the useful links as well. I am also keeping the pictures of the things I'm interested in because I love those.</p>
-
-    <h3>Things I’m Interested In</h3>
-    <div class="interests">
-        <img src="Interest1.jpg" alt="Interest 1">
-        <img src="Interest2.jpg" alt="Interest 2">
-        <img src="Interest3.jpeg" alt="Interest 3">
-    </div>
+    <p>In this page, I will list all the things I will do in this CE-514 course and provide the links under CE - 514 Assignment Links.</p>
 
     <h3>CE - 514 Assignment Links</h3>
     <ul>
-        
         <li><a href="leaflet.html" target="_blank">View My Locations on the Map - Leaflet Map</a></li> <!-- Link to leaflet.html -->
     </ul>
 </body>
 </html>
+
