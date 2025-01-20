@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 0 auto;
+        }
+        input, select {
+            padding: 8px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Unit Converter for Linear Units</h1>
+
+<div class="container">
+    <label for="valueInput">Enter value:</label>
+    <input type="number" id="valueInput" placeholder="Enter value" required>
+
+    <label for="inputUnit">Choose input unit:</label>
+    <select id="inputUnit">
+        <option value="inches">Inches</option>
+        <option value="feet">Feet</option>
+        <option value="yards">Yards</option>
+        <option value="miles">Miles</option>
+        <option value="meters">Meters</option>
+        <option value="kilometers">Kilometers</option>
+    </select>
+
+    <label for="outputUnit">Choose output unit:</label>
+    <select id="outputUnit">
+        <option value="inches">Inches</option>
+        <option value="feet">Feet</option>
+        <option value="yards">Yards</option>
+        <option value="miles">Miles</option>
+        <option value="meters">Meters</option>
+        <option value="kilometers">Kilometers</option>
+    </select>
+
+    <button onclick="convertUnits()">Convert</button>
+
+    <div class="result" id="result">Converted value will appear here.</div>
+</div>
+
+<script>
+// Conversion factors
+const conversionRates = {
+    inches: 1,
+    feet: 12,
+    yards: 36,
+    miles: 63360,
+    meters: 39.3701,
+    kilometers: 39370.1
+};
+
+function convertUnits() {
+    const value = parseFloat(document.getElementById('valueInput').value);
+    const inputUnit = document.getElementById('inputUnit').value;
+    const outputUnit = document.getElementById('outputUnit').value;
+
+    if (isNaN(value) || value <= 0) {
+        alert("Please enter a valid number.");
+        return;
+    }
+
+    // Convert the input value to inches first
+    const valueInInches = value * conversionRates[inputUnit];
+
+    // Convert inches to the selected output unit
+    const convertedValue = valueInInches / conversionRates[outputUnit];
+
+    // Display result
+    document.getElementById('result').textContent = `${value} ${inputUnit} is equal to ${convertedValue.toFixed(4)} ${outputUnit}.`;
+}
+</script>
+
+</body>
+</html>
