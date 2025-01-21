@@ -34,22 +34,49 @@
         h1, h2, h3 {
             color: #0d47a1;
         }
+
         a {
             text-decoration: none;
             color: #1565c0;
+            font-weight: bold;
         }
+
         a:hover {
             text-decoration: underline;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        ul li {
-            margin: 5px 0;
-        }
+
         p {
             color: #212121; /* Ensure body text matches the darker theme */
+        }
+
+        /* Single-Column Grid for Assignment Links */
+        .assignment-links {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            gap: 20px; /* Space between each link */
+            justify-content: center; /* Center items vertically */
+            align-items: center; /* Center items horizontally */
+            margin: 20px auto; /* Center the container on the page */
+            max-width: 400px; /* Limit the container width */
+            padding: 10px;
+        }
+
+        .assignment-links a {
+            display: block;
+            background-color: #f5f5f5; /* Light background for links */
+            color: #0d47a1; /* Darker text for links */
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add a shadow for style */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%; /* Ensure links take full width of the container */
+            max-width: 350px; /* Limit the width of each link */
+        }
+
+        .assignment-links a:hover {
+            transform: scale(1.05); /* Slight zoom effect on hover */
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2); /* Add a deeper shadow on hover */
         }
     </style>
 </head>
@@ -64,11 +91,9 @@
     <p>In this page, I will list all the things I will do in this CE-514 course and provide the links under CE - 514 Assignment Links.</p>
 
     <h3>CE - 514 Assignment Links</h3>
-    <ul>
-        <li><a href="leaflet.html" target="_blank">A2 - View My Locations on the Map - Leaflet Map</a></li> <!-- Link to leaflet.html -->
-        <li><a href="unitconverter.html" target="_blank">A3 - Unit Converter for Linear Units</a></li> <!-- Link to unitconverter.html -->
-        
-    </ul>
+    <div class="assignment-links">
+        <a href="leaflet.html" target="_blank">A2 - View My Locations on the Map - Leaflet Map</a>
+        <a href="unitconverter.html" target="_blank">A3 - Unit Converter for Linear Units</a>
+    </div>
 </body>
 </html>
-
