@@ -1,9 +1,9 @@
 /* General body styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #e9ecef;
     color: #333;
 }
 
@@ -33,14 +33,6 @@ h1 {
     #map {
         height: 400px;
     }
-}
-
-/* Styling for the body */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #e9ecef;
 }
 
 /* Add a footer with styling */
