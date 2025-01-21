@@ -4,35 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map of My Locations</title>
+    
+    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="leafletstyling.css" />
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
     <h1>My Locations on the Map</h1>
     <div id="map"></div>
     
+    <!-- Leaflet JavaScript -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script>
         var map = L.map('map').setView([40.2338, -111.6585], 12);  // Centered on BYU, Utah, USA
 
-        // Tile layer (OpenStreetMap)
+        // OpenStreetMap Tile Layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Add markers for BYU (Utah, USA) and Bangladesh
+        // Markers
         var byuLocation = [40.2338, -111.6585];
-        var bangladeshLocation = [23.685, 90.3563]; // Rough coordinates for Bangladesh
+        var bangladeshLocation = [23.685, 90.3563]; 
 
-        // Marker for BYU
         var byuMarker = L.marker(byuLocation).addTo(map);
         byuMarker.bindPopup("<b>Brigham Young University (BYU), USA</b><br>My Current Location");
 
-        // Marker for Bangladesh
         var bangladeshMarker = L.marker(bangladeshLocation).addTo(map);
         bangladeshMarker.bindPopup("<b>Bangladesh</b><br>My Home Country");
 
-        // Add reverse geocoding to show location names on click
+        // Reverse geocoding on click
         map.on('click', function(e) {
             var lat = e.latlng.lat;
             var lng = e.latlng.lng;
@@ -41,7 +45,6 @@
                 .setContent("You clicked the map at " + lat.toFixed(4) + ", " + lng.toFixed(4))
                 .openOn(map);
 
-            // Reverse geocoding using OpenStreetMap's Nominatim
             var geocoder = L.Control.Geocoder.nominatim();
             geocoder.reverse([lat, lng], map.options.crs.scale(map.getZoom()), function(results) {
                 var result = results && results[0];
