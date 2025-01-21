@@ -15,16 +15,17 @@ h1 {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 350px; /* Increase the container width */
+    width: 400px; /* Increase the container width */
     margin: 0 auto;
 }
 
 input, select {
-    padding: 15px; /* Increase padding for larger size */
+    padding: 20px; /* Increase padding for larger box size */
     margin: 15px 0; /* Add more space between elements */
     width: 100%;
-    font-size: 1.2rem; /* Make text larger */
+    font-size: 1.8rem; /* Larger text inside the boxes */
     box-sizing: border-box;
+    border-radius: 5px; /* Optional rounded corners */
 }
 
 button {
@@ -33,7 +34,7 @@ button {
     color: white;
     border: none;
     width: 100%;
-    font-size: 1.2rem; /* Larger button text */
+    font-size: 1.5rem; /* Larger button text */
     cursor: pointer;
     border-radius: 5px;
 }
