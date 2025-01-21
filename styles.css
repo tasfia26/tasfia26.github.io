@@ -1,40 +1,43 @@
 body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 {
-            color: #333;
-        }
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            margin: 0 auto;
-        }
-        input, select {
-            padding: 8px;
-            margin: 10px 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            width: 100%;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: center;
+}
+h1 {
+    color: #333;
+}
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 350px; /* Slightly wider container */
+    margin: 0 auto;
+}
+input, select {
+    padding: 15px; /* Increased padding for bigger size */
+    margin: 15px 0; /* Add more space between elements */
+    width: 100%;
+    font-size: 1.2rem; /* Larger text size for readability */
+    height: 50px; /* Optional: fixed height for uniformity */
+    box-sizing: border-box;
+}
+button {
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    width: 100%;
+    font-size: 1.2rem; /* Larger button text */
+    cursor: pointer;
+    border-radius: 5px;
+}
+button:hover {
+    background-color: #45a049;
+}
+.result {
+    margin-top: 20px;
+    font-size: 1.5rem; /* Larger result text */
+    font-weight: bold;
+}
