@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map of My Locations</title>
-    <link rel="stylesheet" href="leafletstyling.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
     <h1>My Locations on the Map</h1>
@@ -15,7 +15,7 @@
     <script>
         var map = L.map('map').setView([40.2338, -111.6585], 12);  // Centered on BYU, Utah, USA
 
-        // Tile layer (OpenStreetMap)
+        // Use OpenStreetMap tile layer from an external CDN
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
