@@ -4,40 +4,45 @@ body {
     padding: 20px;
     text-align: center;
 }
+
 h1 {
     color: #333;
+    font-size: 1.8rem; /* Uniform font size for the heading */
 }
+
 .container {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 350px; /* Slightly wider container */
+    width: 350px; /* Width accommodates uniform box sizes */
     margin: 0 auto;
 }
-input, select {
-    padding: 15px; /* Increased padding for bigger size */
-    margin: 15px 0; /* Add more space between elements */
-    width: 100%;
-    font-size: 1.2rem; /* Larger text size for readability */
-    height: 50px; /* Optional: fixed height for uniformity */
-    box-sizing: border-box;
+
+input, select, button {
+    padding: 15px; /* Consistent padding */
+    margin: 10px 0; /* Space between elements */
+    width: 100%; /* Full width inside container */
+    font-size: 1.2rem; /* Same font size for all elements */
+    height: 50px; /* Uniform height for inputs, dropdowns, and button */
+    box-sizing: border-box; /* Ensure proper box sizing */
+    border: 1px solid #ccc; /* Add consistent border */
+    border-radius: 5px; /* Rounded corners for consistency */
 }
+
 button {
-    padding: 12px;
     background-color: #4CAF50;
     color: white;
-    border: none;
-    width: 100%;
-    font-size: 1.2rem; /* Larger button text */
     cursor: pointer;
-    border-radius: 5px;
+    border: none;
 }
+
 button:hover {
     background-color: #45a049;
 }
+
 .result {
     margin-top: 20px;
-    font-size: 1.5rem; /* Larger result text */
+    font-size: 1.2rem; /* Same font size for result text */
     font-weight: bold;
 }
