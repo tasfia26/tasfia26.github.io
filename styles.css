@@ -7,6 +7,7 @@ body {
 
 h1 {
     color: #333;
+    font-size: 2rem; /* Increase font size for the heading */
 }
 
 .container {
@@ -14,23 +15,25 @@ h1 {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 350px; /* Increase the container width */
     margin: 0 auto;
 }
 
 input, select {
-    padding: 8px;
-    margin: 10px 0;
+    padding: 15px; /* Increase padding for larger size */
+    margin: 15px 0; /* Add more space between elements */
     width: 100%;
+    font-size: 1.2rem; /* Make text larger */
     box-sizing: border-box;
 }
 
 button {
-    padding: 10px;
+    padding: 12px;
     background-color: #4CAF50;
     color: white;
     border: none;
     width: 100%;
+    font-size: 1.2rem; /* Larger button text */
     cursor: pointer;
     border-radius: 5px;
 }
@@ -41,6 +44,6 @@ button:hover {
 
 .result {
     margin-top: 20px;
-    font-size: 18px;
+    font-size: 1.5rem; /* Make result text larger and clearer */
     font-weight: bold;
 }
