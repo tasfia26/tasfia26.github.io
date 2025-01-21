@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.8;
+    text-align: center;
+    background: url('background3.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    color: #212121; /* Darker color for body text */
+    font-size: 18px; /* Slightly larger text */
+}
+img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    transition: transform 0.5s ease-in-out;
+}
+
+img#profile-picture {
+    transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+img#profile-picture:hover {
+    transform: scale(1.8);
+}
+
+h1, h2, h3 {
+    color: #0d47a1;
+}
+
+a {
+    text-decoration: none;
+    color: #1565c0;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+p {
+    color: #212121; /* Ensure body text matches the darker theme */
+}
+
+/* Single-Column Grid for Assignment Links */
+.assignment-links {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    gap: 20px; /* Space between each link */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    margin: 20px auto; /* Center the container on the page */
+    max-width: 400px; /* Limit the container width */
+    padding: 10px;
+}
+
+.assignment-links a {
+    display: block;
+    background-color: #f5f5f5; /* Light background for links */
+    color: #0d47a1; /* Darker text for links */
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add a shadow for style */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; /* Ensure links take full width of the container */
+    max-width: 350px; /* Limit the width of each link */
+}
+
+.assignment-links a:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2); /* Add a deeper shadow on hover */
+}
