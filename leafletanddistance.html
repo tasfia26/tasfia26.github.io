@@ -195,10 +195,10 @@
 
         // Home Town Polygon (Uttara, Dhaka)
         var polygonLatLngs = [
-            [23.8800, 90.3870],
-            [23.8850, 90.3900],
-            [23.8880, 90.3880],
-            [23.8860, 90.3840]
+            [23.8780, 90.3830],
+            [23.8780, 90.3930],
+            [23.8880, 90.3930],
+            [23.8880, 90.3830]
         ];
         L.polygon(polygonLatLngs, {
             color: 'blue',
@@ -207,7 +207,7 @@
         }).addTo(map).bindPopup("<b>Home Town Polygon</b><br>Uttara, Dhaka");
 
         // Circle for Home (Dhaka)
-        L.circle([23.8814, 90.3873], {radius: 30, color: 'red', fillColor: 'red', fillOpacity: 0.2})
+        L.circle([23.8814, 90.3873], {radius: 60, color: 'red', fillColor: 'red', fillOpacity: 0.2})
             .addTo(map).bindPopup("<b>My Home</b><br>Dhaka, Bangladesh");
 
     </script>
