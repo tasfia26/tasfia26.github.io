@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map of My Locations</title>
+    <link rel="stylesheet" href="leafletanddistancestyles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <header style="text-align: center; margin: 20px;">
+        <h1>Tasfia Mahjarin</h1>
+        <p><strong>Assignment Number:</strong> A5 - Build an Interactive Page with Leaflet Open Source Mapping API</p>
+        <p><strong>Class:</strong> CE - 514</p>
+        <p><strong>Date:</strong> 27 January 2025</p>
+    </header>
+
+    <h2 style="text-align: center;">My Locations on the Map</h2>
+    <p style="text-align: center;">
+        <a href="leafletstyles.css" target="_blank">View Leaflet CSS Styling Code</a>
+    </p>
+    
+    <!-- Map Container -->
+    <div id="map" style="height: 600px; width: 100%;"></div>
+
+    <!-- Input Fields for distance measuring -->
+    <div style="text-align: center; margin-top: 20px;">
+        <h3>Enter Two Locations</h3>
+        <label for="lat1">Latitude 1:</label>
+        <input type="text" id="lat1" placeholder="Enter Latitude 1">
+        <label for="lng1">Longitude 1:</label>
+        <input type="text" id="lng1" placeholder="Enter Longitude 1">
+        <br><br>
+        <label for="lat2">Latitude 2:</label>
+        <input type="text" id="lat2" placeholder="Enter Latitude 2">
+        <label for="lng2">Longitude 2:</label>
+        <input type="text" id="lng2" placeholder="Enter Longitude 2">
+        <br><br>
+        <button onclick="drawLineAndCalculate()">Draw Line and Calculate Distance</button>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <h3>Click on the Map to Get Coordinates</h3>
+        <label for="latClicked">Latitude:</label>
+        <input type="text" id="latClicked" readonly>
+        <label for="lngClicked">Longitude:</label>
+        <input type="text" id="lngClicked" readonly>
+    </div>
+
+    <!-- Display the calculated distance -->
+    <div style="text-align: center; margin-top: 20px;">
+        <h3>Distance between two points:</h3>
+        <p id="distanceDisplay">No distance calculated yet.</p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([23.8840, 90.3884], 12); // Centered on Uttara, Dhaka
+
+        // Tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Function to convert degrees to radians
+        function toRadians(degrees) {
+            return degrees * Math.PI / 180;
+        }
+
+        // Haversine formula to calculate the great-circle distance
+        function haversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth's radius in km
+            const φ1 = toRadians(lat1);
+            const φ2 = toRadians(lat2);
+            const Δφ = toRadians(lat2 - lat1);
+            const Δλ = toRadians(lon2 - lon1);
+
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            const distance = R * c; // Distance in kilometers
+            return distance;
+        }
+
+        // Array to store the drawn lines and markers (start and end triangles)
+        var drawnLines = [];
+        var drawnMarkers = [];
+
+        // Function to draw a line between two points and calculate the distance
+        function drawLineAndCalculate() {
+            // Get user input values
+            var lat1 = parseFloat(document.getElementById('lat1').value);
+            var lon1 = parseFloat(document.getElementById('lng1').value);
+            var lat2 = parseFloat(document.getElementById('lat2').value);
+            var lon2 = parseFloat(document.getElementById('lng2').value);
+
+            // Check if all inputs are valid
+            if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
+                alert('Please enter valid coordinates for both locations.');
+                return;
+            }
+
+            // Clear previously drawn lines and markers (triangles)
+            for (var i = 0; i < drawnLines.length; i++) {
+                map.removeLayer(drawnLines[i]);
+            }
+            for (var i = 0; i < drawnMarkers.length; i++) {
+                map.removeLayer(drawnMarkers[i]);
+            }
+            drawnLines = [];
+            drawnMarkers = [];
+
+            // Draw a polyline (great circle) between the two points
+            var latlngs = [[lat1, lon1], [lat2, lon2]];
+            var polyline = L.polyline(latlngs, {color: 'blue'}).addTo(map);
+            drawnLines.push(polyline); // Store the new line
+
+            // Add custom triangle markers at the start and end of the line
+            var startIcon = L.divIcon({
+                className: 'leaflet-div-icon',
+                html: '<div style="width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 10px solid red;"></div>',
+                iconSize: [10, 10]
+            });
+            var endIcon = L.divIcon({
+                className: 'leaflet-div-icon',
+                html: '<div style="width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 10px solid green;"></div>',
+                iconSize: [10, 10]
+            });
+
+            // Markers for the start and end points
+            var startMarker = L.marker([lat1, lon1], {icon: startIcon}).addTo(map);
+            var endMarker = L.marker([lat2, lon2], {icon: endIcon}).addTo(map);
+
+            // Add these markers to the drawnMarkers array
+            drawnMarkers.push(startMarker);
+            drawnMarkers.push(endMarker);
+
+            // Calculate and display the distance between the points
+            var distance = haversine(lat1, lon1, lat2, lon2);
+
+            // Display distance on the web page
+            document.getElementById('distanceDisplay').textContent = "The Distance between Two Points is: " + distance.toFixed(2) + " km";
+        }
+
+        // Store the current marker for removal
+        var currentMarker = null;
+
+        // Event listener to capture click coordinates and place markers
+        map.on('click', function(e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+
+            // If there is a marker already, remove it
+            if (currentMarker) {
+                map.removeLayer(currentMarker);
+            }
+
+            // Add marker at the clicked location
+            currentMarker = L.marker([lat, lng]).addTo(map);
+
+            // Update the input fields with the clicked coordinates
+            document.getElementById('latClicked').value = lat.toFixed(6);
+            document.getElementById('lngClicked').value = lng.toFixed(6);
+        });
+
+        // Simple default icons with different colors for each location
+        var homeTownIcon = new L.DivIcon({
+            className: 'leaflet-div-icon',
+            html: '<div style="background-color: purple; width: 12px; height: 12px; border-radius: 50%;"></div>',
+            iconSize: [12, 12]
+        });
+
+        var undergradIcon = new L.DivIcon({
+            className: 'leaflet-div-icon',
+            html: '<div style="background-color: green; width: 12px; height: 12px; border-radius: 50%;"></div>',
+            iconSize: [12, 12]
+        });
+
+        var homeIcon = new L.DivIcon({
+            className: 'leaflet-div-icon',
+            html: '<div style="background-color: blue; width: 12px; height: 12px; border-radius: 50%;"></div>',
+            iconSize: [12, 12]
+        });
+
+        // Add markers for Home Town (Uttara, Dhaka), Home (Dhaka, Bangladesh) and University (MIST)
+        var homeTown = [23.8840, 90.3884]; // Uttara, Dhaka
+        var undergradUniversity = [23.8376219, 90.3580581]; // Military Institute of Science and Technology (MIST)
+        var home = [23.8814, 90.3873]; // My Home Location (Dhaka, Bangladesh)
+
+        // Add the fixed markers and polygons here so they do not get removed on distance calculation
+        L.marker(homeTown, { icon: homeTownIcon }).addTo(map).bindPopup("<b>My Home Town</b><br>Uttara, Dhaka");
+        L.marker(undergradUniversity, { icon: undergradIcon }).addTo(map).bindPopup("<b>Undergrad University</b><br>Military Institute of Science and Technology (MIST)");
+        L.marker(home, { icon: homeIcon }).addTo(map).bindPopup("<b>My Home</b><br>Dhaka, Bangladesh");
+
+        // Home Town Polygon (Uttara, Dhaka)
+        var polygonLatLngs = [
+            [23.8800, 90.3870],
+            [23.8850, 90.3900],
+            [23.8880, 90.3880],
+            [23.8860, 90.3840]
+        ];
+        L.polygon(polygonLatLngs, {
+            color: 'blue',
+            fillColor: 'blue',
+            fillOpacity: 0.2
+        }).addTo(map).bindPopup("<b>Home Town Polygon</b><br>Uttara, Dhaka");
+
+        // Circle for Home (Dhaka)
+        L.circle([23.8814, 90.3873], {radius: 30, color: 'red', fillColor: 'red', fillOpacity: 0.2})
+            .addTo(map).bindPopup("<b>My Home</b><br>Dhaka, Bangladesh");
+
+    </script>
+</body>
+</html>
