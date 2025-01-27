@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map of My Locations</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 600px; width: 100%; }
+        #coordsDisplay { margin-top: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <header style="text-align: center; margin: 20px;">
+        <h1>Tasfia Mahjarin</h1>
+        <p><strong>Assignment:</strong> A5 - Build an Interactive Page with Leaflet Open Source Mapping API</p>
+        <p><strong>Class:</strong> CE - 514 (Geospatial Software Development)</p>
+        <p><strong>Date:</strong> 27 January 2025</p>
+    </header>
+
+    <h2 style="text-align: center;">My Locations on the Map</h2>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <h3>Enter Two Locations</h3>
+        <label for="lat1">Latitude 1:</label>
+        <input type="text" id="lat1" placeholder="Enter Latitude 1">
+        <label for="lng1">Longitude 1:</label>
+        <input type="text" id="lng1" placeholder="Enter Longitude 1">
+        <br><br>
+        <label for="lat2">Latitude 2:</label>
+        <input type="text" id="lat2" placeholder="Enter Latitude 2">
+        <label for="lng2">Longitude 2:</label>
+        <input type="text" id="lng2" placeholder="Enter Longitude 2">
+        <br><br>
+        <button onclick="drawSphereAndCalculate()">Draw Sphere and Calculate Distance</button>
+    </div>
+
+    <!-- Display the calculated distance -->
+    <div style="text-align: center; margin-top: 20px;">
+        <h3>Distance between two points:</h3>
+        <p id="distanceDisplay">No distance calculated yet.</p>
+    </div>
+
+    <!-- Display Latitude and Longitude on Click -->
+    <div id="coordsDisplay">
+        <h3>Click on the map to get Latitude and Longitude</h3>
+        <p id="latLongDisplay">No coordinates selected yet.</p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([23.8840, 90.3884], 12); // Centered on Uttara, Dhaka
+
+        // Tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Function to convert degrees to radians
+        function toRadians(degrees) {
+            return degrees * Math.PI / 180;
+        }
+
+        // Haversine formula to calculate the great-circle distance
+        function haversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth's radius in km
+            const φ1 = toRadians(lat1);
+            const φ2 = toRadians(lat2);
+            const Δφ = toRadians(lat2 - lat1);
+            const Δλ = toRadians(lon2 - lon1);
+
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); // This is 'c' in your equations
+
+            const distance = R * c; // Distance in kilometers
+            return distance;
+        }
+
+        // Function to calculate the great circle (sphere) path between two points
+        function greatCircle(lat1, lon1, lat2, lon2) {
+            // Convert inputs to radians
+            const rad_lat1 = toRadians(lat1);
+            const rad_lon1 = toRadians(lon1);
+            const rad_lat2 = toRadians(lat2);
+            const rad_lon2 = toRadians(lon2);
+
+            // Calculate the angular distance (delta)
+            const dLon = rad_lon2 - rad_lon1;
+            const dLat = rad_lat2 - rad_lat1;
+            const a = Math.sin(dLat / 2) ** 2 + Math.cos(rad_lat1) * Math.cos(rad_lat2) * Math.sin(dLon / 2) ** 2;
+            const angular_distance = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); // This is 'c' in your equations
+
+            // Divide the angular distance into 100 segments
+            const num_segments = 100; // Smoother line
+            const segment_angle = angular_distance / num_segments;
+
+            const points = [];
+            for (let i = 0; i <= num_segments; i++) {
+                const f = i / num_segments;
+
+                const A = Math.sin((1 - f) * angular_distance) / Math.sin(angular_distance);
+                const B = Math.sin(f * angular_distance) / Math.sin(angular_distance);
+
+                const x = A * Math.cos(rad_lat1) * Math.cos(rad_lon1) + B * Math.cos(rad_lat2) * Math.cos(rad_lon2);
+                const y = A * Math.cos(rad_lat1) * Math.sin(rad_lon1) + B * Math.cos(rad_lat2) * Math.sin(rad_lon2);
+                const z = A * Math.sin(rad_lat1) + B * Math.sin(rad_lat2);
+
+                const new_lat = Math.atan2(z, Math.sqrt(x ** 2 + y ** 2));
+                const new_lon = Math.atan2(y, x);
+
+                points.push([new_lat * 180 / Math.PI, new_lon * 180 / Math.PI]);
+            }
+
+            return points;
+        }
+
+        // Array to store the drawn markers (for input points)
+        var drawnMarkers = [];
+        var lastSphere = null; // To hold the last drawn sphere polyline
+        var clickMarker = null; // Marker to move with clicks
+
+        // Function to draw the sphere between two points and calculate the distance
+        function drawSphereAndCalculate() {
+            // Get user input values
+            var lat1 = parseFloat(document.getElementById('lat1').value);
+            var lon1 = parseFloat(document.getElementById('lng1').value);
+            var lat2 = parseFloat(document.getElementById('lat2').value);
+            var lon2 = parseFloat(document.getElementById('lng2').value);
+
+            // Check if all inputs are valid
+            if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
+                alert('Please enter valid coordinates for both locations.');
+                return;
+            }
+
+            // Clear previously drawn markers
+            for (var i = 0; i < drawnMarkers.length; i++) {
+                map.removeLayer(drawnMarkers[i]);
+            }
+            drawnMarkers = [];
+
+            // Remove the previous sphere if it exists
+            if (lastSphere) {
+                map.removeLayer(lastSphere); // Remove the previously drawn great circle line
+            }
+
+            // Add markers at the start and end points
+            var marker1 = L.marker([lat1, lon1]).addTo(map);
+            var marker2 = L.marker([lat2, lon2]).addTo(map);
+
+            // Add these markers to the drawnMarkers array
+            drawnMarkers.push(marker1);
+            drawnMarkers.push(marker2);
+
+            // Calculate and display the distance between the points
+            var distance = haversine(lat1, lon1, lat2, lon2);
+            document.getElementById('distanceDisplay').innerText = "Distance: " + distance.toFixed(2) + " km";
+
+            // Draw the sphere (great circle) path between the two points
+            var spherePoints = greatCircle(lat1, lon1, lat2, lon2);
+            lastSphere = L.polyline(spherePoints, { color: 'blue' }).addTo(map);
+        }
+
+        // Add markers for home, hometown, and undergrad university
+        L.marker([23.8840, 90.3884]).addTo(map).bindPopup("<b>Home </b>(Sector 10, Uttara, Dhaka, Bangladesh)");
+        L.marker([23.8834, 90.3805]).addTo(map).bindPopup("<b>Home Area </b>(Dhaka, Bangaldesh)");
+        L.marker([23.8377, 90.3579]).addTo(map).bindPopup("<b>Undergrad University </b>(Military Institute of Science and Technology (MIST), Dhaka, Bangladesh");
+
+        // Coordinates for the hometown (Dhaka)
+        var hometownLat = 23.8834;
+        var hometownLng = 90.3805;
+
+        // Side length of square in km (for a 20 km² area)
+        var sideLengthKm = Math.sqrt(20); // 4.472 km
+
+        // Conversion factors for latitude and longitude
+        var latConversion = 1 / 111; // 1 degree = 111 km
+        var lngConversion = 1 / 85.5; // 1 degree = 85.5 km at latitude 23.8
+
+        // Calculate the degree offsets for the square
+        var latOffset = sideLengthKm * latConversion;
+        var lngOffset = sideLengthKm * lngConversion;
+
+        // Define the coordinates of the square (around the hometown)
+        var squareLatLon = [
+            [hometownLat - latOffset, hometownLng - lngOffset], // Top-left
+            [hometownLat - latOffset, hometownLng + lngOffset], // Top-right
+            [hometownLat + latOffset, hometownLng + lngOffset], // Bottom-right
+            [hometownLat + latOffset, hometownLng - lngOffset]  // Bottom-left
+        ];
+
+        // Add the square polygon to the map
+        L.polygon(squareLatLon, {
+            color: 'blue',
+            fillColor: 'blue',
+            fillOpacity: 0.1
+        }).addTo(map);
+        
+         // Add a transparent circle with 80m radius around home
+        L.circle([23.8840, 90.3884], {
+            color: 'red',
+            fillColor: 'blue',
+            fillOpacity: 0.1,
+            radius: 150
+        }).addTo(map);
+
+        // Function to display clicked coordinates
+        map.on('click', function (e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+
+            // Update the display with clicked coordinates
+            document.getElementById('latLongDisplay').innerText = "Latitude: " + lat.toFixed(6) + ", Longitude: " + lng.toFixed(6);
+
+            // If there's already a marker, move it, otherwise create a new one
+            if (clickMarker) {
+                clickMarker.setLatLng(e.latlng);
+            } else {
+                clickMarker = L.marker(e.latlng).addTo(map);
+            }
+        });
+    </script>
+</body>
+</html>
