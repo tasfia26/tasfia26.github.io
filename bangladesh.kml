@@ -6,7 +6,7 @@
 <!-- Define the style -->
     <Style id="polygonStyle">
       <PolyStyle>
-        <color>7f0000ff</color> <!-- This is the color in aabbggrr format, where 'ff0000ff' is blue -->
+        <color>7fff0000</color> <!-- This is the color in aabbggrr format, where 'fff0000' is red -->
       </PolyStyle>
     </Style>
 
