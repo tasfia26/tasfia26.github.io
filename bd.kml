@@ -22,5 +22,12 @@
                 </outerBoundaryIs>
             </Polygon>
         </Placemark>
+<Style id="iconStyle">
+      <IconStyle>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href> <!-- Simple built-in icon -->
+        </Icon>
+      </IconStyle>
+    </Style>
     </Document>
 </kml>
