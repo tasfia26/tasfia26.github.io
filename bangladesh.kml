@@ -3,12 +3,7 @@
     <Document>
         <name>Bangladesh</name>
 
-<!-- Define the style -->
-    <Style id="polygonStyle">
-      <PolyStyle>
-        <color>7fff0000</color> <!-- This is the color in aabbggrr format, where 'fff0000' is red -->
-      </PolyStyle>
-    </Style>
+
 
         <Placemark>
             <name>Bangladesh, with an area of 57321 square miles.</name>
