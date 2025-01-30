@@ -3,7 +3,7 @@
     <Document>
         <name>Utah.</name>
         <Placemark>
-            <name>Utah has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh</name>
+            <name>This is Utah</name>
             <Polygon>
                 <outerBoundaryIs>
                     <LinearRing>
