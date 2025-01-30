@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bangladesh Map</title>
+    <title>Bangladesh and Utah Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-kml/L.KML.js"></script>
@@ -12,13 +12,14 @@
     </style>
 </head>
 <body>
-    <h1>Bangladesh KML Map</h1>
+    <h1>Bangladesh and Utah KML Map</h1>
     <p>
         First, I used ArcGIS to prepare the polygons of my interests and created shapefiles. After that, I used a geoprocessing tool <strong>"Layer to KML"</strong>, where I gave the shapefile as an input and the tool generated a KML layer as an output. I opened the KML layer with Notepad++. Afterward, I created KML files and incorporated them into the HTML file.
     </p>
-    <p>Here is the code I used to load the KML file into the Leaflet map:</p>
+    <p>Here is the code I used to load the KML files into the Leaflet map:</p>
     <code>
-        fetch('bangladesh.kml')<br>
+        function loadKML(file) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;fetch(file)<br>
         &nbsp;&nbsp;&nbsp;&nbsp;.then(res => res.text())<br>
         &nbsp;&nbsp;&nbsp;&nbsp;.then(kmltext => {<br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var parser = new DOMParser();<br>
@@ -27,7 +28,8 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.addLayer(track);<br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.fitBounds(track.getBounds());<br>
         &nbsp;&nbsp;&nbsp;&nbsp;})<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;.catch(err => console.error("Error loading KML: ", err));
+        &nbsp;&nbsp;&nbsp;&nbsp;.catch(err => console.error("Error loading KML: ", err));<br>
+        }
     </code>
     <div id="map"></div>
     <script>
@@ -37,16 +39,26 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        fetch('bangladesh.kml')
-            .then(res => res.text())
-            .then(kmltext => {
-                var parser = new DOMParser();
-                var kml = parser.parseFromString(kmltext, 'text/xml');
-                var track = new L.KML(kml);
-                map.addLayer(track);
-                map.fitBounds(track.getBounds());
-            })
-            .catch(err => console.error("Error loading KML: ", err));
+        function loadKML(file, popupContent, center) {
+            fetch(file)
+                .then(res => res.text())
+                .then(kmltext => {
+                    var parser = new DOMParser();
+                    var kml = parser.parseFromString(kmltext, 'text/xml');
+                    var track = new L.KML(kml);
+                    map.addLayer(track);
+                    map.fitBounds(track.getBounds());
+                    
+                    if (center) {
+                        var marker = L.marker(center).addTo(map);
+                        marker.bindPopup(popupContent).openPopup();
+                    }
+                })
+                .catch(err => console.error("Error loading KML: ", err));
+        }
+        
+        loadKML('bangladesh.kml');
+        loadKML('utah.kml', "Utah has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh", [39.320980, -111.093735]);
     </script>
 </body>
 </html>
