@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
+        <name>Utah</name>
+        <Placemark>
+            <name>Utah</name>
+            <Polygon>
+                <outerBoundaryIs>
+                    <LinearRing>
+                        <coordinates>
+                          -114.0366443841405,42.01474769167103,0 -114.0366443841405,37.0120432099753,0 -109.0335238287092,37.00144555673296,0 -109.060065582319,41.01111187271401,0 -111.0639679798524,40.96102300315308,0 -111.0772388566573,41.99502483973345,0 -114.0366443841405,42.01474769167103,0 
+                        </coordinates>
+                    </LinearRing>
+                </outerBoundaryIs>
+            </Polygon>
+        </Placemark>
+    </Document>
+</kml>
