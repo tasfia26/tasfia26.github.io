@@ -39,16 +39,31 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        function loadKML(file, popupContent, center) {
+        function loadKML(file, popupContent, center, color) {
             fetch(file)
                 .then(res => res.text())
                 .then(kmltext => {
                     var parser = new DOMParser();
                     var kml = parser.parseFromString(kmltext, 'text/xml');
                     var track = new L.KML(kml);
+
                     map.addLayer(track);
                     map.fitBounds(track.getBounds());
-                    
+
+                    // Apply custom styles to each polygon (we assume the KML contains polygons)
+                    track.on('loaded', function() {
+                        track.eachLayer(function(layer) {
+                            if (layer instanceof L.Polygon) {
+                                layer.setStyle({
+                                    color: color,
+                                    weight: 2,
+                                    opacity: 1,
+                                    fillOpacity: 0.5
+                                });
+                            }
+                        });
+                    });
+
                     if (center) {
                         var marker = L.marker(center).addTo(map);
                         marker.bindPopup(popupContent).openPopup();
@@ -56,12 +71,12 @@
                 })
                 .catch(err => console.error("Error loading KML: ", err));
         }
-        
-        // Add the Bangladesh KML with a popup message at the center of Bangladesh
-    loadKML('bangladesh.kml', "<b>This is Bangladesh.</b>", [23.685, 90.3563], 'green');
 
-    // Add the Utah KML with a popup message
-    loadKML('utah.kml', "<b>This is Utah. It has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh</b>", [39.320980, -111.093735], 'red');
+        // Add the Bangladesh KML with a blue color and popup message at the center of Bangladesh
+        loadKML('bangladesh.kml', "<b>This is Bangladesh.</b>", [23.685, 90.3563], 'blue');
+
+        // Add the Utah KML with a red color and popup message
+        loadKML('utah.kml', "<b>This is Utah. It has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh</b>", [39.320980, -111.093735], 'red');
     </script>
 </body>
 </html>
