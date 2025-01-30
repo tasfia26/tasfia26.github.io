@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
     <Document>
-        <name>Utah has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh</name>
+        <name>Utah.</name>
         <Placemark>
             <name>Utah has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh</name>
             <Polygon>
