@@ -2,6 +2,14 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
     <Document>
         <name>Bangladesh</name>
+
+<!-- Define the style -->
+    <Style id="polygonStyle">
+      <PolyStyle>
+        <color>7f0000ff</color> <!-- This is the color in aabbggrr format, where 'ff0000ff' is blue -->
+      </PolyStyle>
+    </Style>
+
         <Placemark>
             <name>Bangladesh, with an area of 57321 square miles.</name>
             <Polygon>
