@@ -37,7 +37,7 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        function loadKML(file, popupContent, center) {
+        function loadKML(file, popupContent, center, color) {
             fetch(file)
                 .then(res => res.text())
                 .then(kmltext => {
@@ -50,12 +50,21 @@
                     track.on('loaded', function() {
                         track.eachLayer(function(layer) {
                             if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
+                                // Set color for polygons (e.g., red for bd.kml)
+                                layer.setStyle({
+                                    fillColor: color,  // Set fill color
+                                    color: 'black',    // Set border color (outline)
+                                    weight: 2,         // Set border width
+                                    fillOpacity: 0.6   // Set fill opacity
+                                });
+
+                                // Bind popup content for polygons
                                 if (layer instanceof L.Polygon && popupContent) {
                                     layer.bindPopup(popupContent);
                                 }
                             }
                         });
-                        map.fitBounds(track.getBounds()); 
+                        map.fitBounds(track.getBounds());
                     });
 
                     if (center) {
@@ -66,8 +75,8 @@
                 .catch(err => console.error("Error loading KML: ", err));
         }
 
-        loadKML('bd.kml', "<b>This is Bangladesh.</b>", [23.685, 90.3563]);
-        loadKML('utah.kml', "<b>This is Utah. It has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh</b>", [39.320980, -111.093735]);
+        loadKML('bd.kml', "<b>This is Bangladesh.</b>", [23.685, 90.3563], 'red');  // Red color for Bangladesh
+        loadKML('utah.kml', "<b>This is Utah. It has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh</b>", [39.320980, -111.093735], 'green');  // Green color for Utah
     </script>
 </body>
 </html>
