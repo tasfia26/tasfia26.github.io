@@ -13,8 +13,23 @@
 </head>
 <body>
     <h1>Bangladesh KML Map</h1>
+    <p>
+        First, I used ArcGIS to prepare the polygons of my interests and created shapefiles. After that, I used a geoprocessing tool <strong>"Layer to KML"</strong>, where I gave the shapefile as an input and the tool generated a KML layer as an output. I opened the KML layer with Notepad++. Afterward, I created KML files and incorporated them into the HTML file.
+    </p>
+    <p>Here is the code I used to load the KML file into the Leaflet map:</p>
+    <code>
+        fetch('bangladesh.kml')<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;.then(res => res.text())<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;.then(kmltext => {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var parser = new DOMParser();<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var kml = parser.parseFromString(kmltext, 'text/xml');<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var track = new L.KML(kml);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.addLayer(track);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.fitBounds(track.getBounds());<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;})<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;.catch(err => console.error("Error loading KML: ", err));
+    </code>
     <div id="map"></div>
-
     <script>
         var map = L.map('map').setView([23.685, 90.3563], 7);
 
