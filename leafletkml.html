@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bangladesh and Utah Map</title>
+    <title>Bangladesh and Utah KML Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-kml/L.KML.js"></script>
@@ -13,22 +13,20 @@
 </head>
 <body>
     <h1>Bangladesh and Utah KML Map</h1>
-    <p>
-        First, I used ArcGIS to prepare the polygons of my interests and created shapefiles. After that, I used a geoprocessing tool <strong>"Layer to KML"</strong>, where I gave the shapefile as an input and the tool generated a KML layer as an output. I opened the KML layer with Notepad++. Afterward, I created KML files and incorporated them into the HTML file.
-    </p>
+    <p>First, I used ArcGIS to prepare the polygons of my interests and created shapefiles. After that, I used a geoprocessing tool <strong>"Layer to KML"</strong>, where I gave the shapefile as an input and the tool generated a KML layer as an output. I opened the KML layer with Notepad++. Afterward, I created KML files and incorporated them into the HTML file.</p>
     <p>Here is the code I used to load the KML files into the Leaflet map:</p>
     <code>
         function loadKML(file) {<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;fetch(file)<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;.then(res => res.text())<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;.then(kmltext => {<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var parser = new DOMParser();<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var kml = parser.parseFromString(kmltext, 'text/xml');<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var track = new L.KML(kml);<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.addLayer(track);<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.fitBounds(track.getBounds());<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;})<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;.catch(err => console.error("Error loading KML: ", err));<br>
+            fetch(file)<br>
+            .then(res => res.text())<br>
+            .then(kmltext => {<br>
+                var parser = new DOMParser();<br>
+                var kml = parser.parseFromString(kmltext, 'text/xml');<br>
+                var track = new L.KML(kml);<br>
+                map.addLayer(track);<br>
+                map.fitBounds(track.getBounds());<br>
+            })<br>
+            .catch(err => console.error("Error loading KML: ", err));<br>
         }
     </code>
     <div id="map"></div>
@@ -39,7 +37,7 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        function loadKML(file, popupContent, center, color) {
+        function loadKML(file, popupContent, center) {
             fetch(file)
                 .then(res => res.text())
                 .then(kmltext => {
@@ -48,20 +46,16 @@
                     var track = new L.KML(kml);
 
                     map.addLayer(track);
-                    map.fitBounds(track.getBounds());
 
-                    // Apply custom styles to each polygon after loading KML
                     track.on('loaded', function() {
                         track.eachLayer(function(layer) {
-                            if (layer instanceof L.Polygon) {
-                                layer.setStyle({
-                                    color: red,  // Set the border color
-                                    weight: 2,
-                                    opacity: 1,
-                                    fillOpacity: 0.5
-                                });
+                            if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
+                                if (layer instanceof L.Polygon && popupContent) {
+                                    layer.bindPopup(popupContent);
+                                }
                             }
                         });
+                        map.fitBounds(track.getBounds()); 
                     });
 
                     if (center) {
@@ -72,11 +66,8 @@
                 .catch(err => console.error("Error loading KML: ", err));
         }
 
-        // Add the Bangladesh KML with a red color and popup message at the center of Bangladesh
-        loadKML('bangladesh.kml', "<b>This is Bangladesh.</b>", [23.685, 90.3563], 'red');
-
-        // Add the Utah KML with a red color and popup message
-        loadKML('utah.kml', "<b>This is Utah. It has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh</b>", [39.320980, -111.093735], 'blue');
+        loadKML('bangladesh.kml', "<b>This is Bangladesh.</b>", [23.685, 90.3563]);
+        loadKML('utah.kml', "<b>This is Utah. It has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh</b>", [39.320980, -111.093735]);
     </script>
 </body>
 </html>
