@@ -57,8 +57,11 @@
                 .catch(err => console.error("Error loading KML: ", err));
         }
         
-        loadKML('bangladesh.kml');
-        loadKML('utah.kml', "Utah has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh", [39.320980, -111.093735]);
+        // Add the Bangladesh KML with a popup message at the center of Bangladesh
+    loadKML('bangladesh.kml', "This is Bangladesh.", [23.685, 90.3563]);
+
+    // Add the Utah KML with a popup message
+    loadKML('utah.kml', "Utah has an area of 84,899 square miles, which is 1.5 times the area of Bangladesh", [39.320980, -111.093735]);
     </script>
 </body>
 </html>
