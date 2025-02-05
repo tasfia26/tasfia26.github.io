@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <title>Streamflow Forecast</title>
+
+  <script src=https://cdn.jsdelivr.net/npm/chart.js></script>
+
+</head>
+
+<body>
+
+  <button onclick="getForecast()">Get Forecast</button>
+  <table id="timeseries-datatable" style="display: none">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Flow value</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  
+  <canvas id="streamflowChart"></canvas>
+
+  <script>
+
+    async function getForecast() {
+        try {
+            const reachId = '12121104'; // Replace with the actual reach ID
+            const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=short_range`;
+
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+            throw new Error(`HTTP error status: ${response.status}`);
+            };
+            const json_data = await response.json();
+            const streamflowData = json_data.shortRange.series.data;
+            const timestamps = streamflowData.map(item => item.validTime);
+            const flowValues = streamflowData.map(item => item.flow);
+            
+            const tableElementCatcher = document.getElementById('timeseries-datatable');
+            tableElementCatcher.style.display = 'block';
+            const table = tableElementCatcher.getElementsByTagName('tbody')[0];
+            const maxLength = Math.max(timestamps.length, flowValues.length);
+            for (let i = 0; i < maxLength; i++) {
+                const row = table.insertRow();
+                const timestampCell = row.insertCell();
+                const flowCell = row.insertCell();
+                timestampCell.textContent = timestamps[i] || ""; 
+                flowCell.textContent = flowValues[i] || ""; 
+            };
+            const chartElementCatcher = document.getElementById('streamflowChart');
+            const ctx = chartElementCatcher.getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timestamps,
+                    datasets: [{
+                        label: 'Streamflow Forecast (Short Range)',
+                        data: flowValues,
+                        borderColor: 'blue',
+                        borderWidth: 1,
+                        fill: false}]
+                    },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Time'}
+                            },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Streamflow'}    
+                            } 
+                        }
+                    }
+                });
+            }
+        catch (error) {
+            console.error('Error fetching or processing data:', error);
+            const chartCanvas = document.getElementById('streamflowChart');
+            chartCanvas.innerHTML = "<p>Error loading chart</p>";        
+        };
+
+    };
+
+  </script>
+
+</body>
+
+</html>
