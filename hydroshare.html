@@ -24,6 +24,18 @@
             border: 1px solid white;
             overflow-x: auto;
         }
+        .layer-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px; /* Add some spacing */
+        }
+        .layer-controls button {
+            margin: 0 5px; /* Add spacing between buttons */
+            padding: 5px 10px; /* Adjust padding as needed */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -37,41 +49,52 @@
             <option value="bangladesh">Bangladesh</option>
         </select>
     </div>
+    <div class="layer-controls">
+        <button id="london-toggle">London</button>
+        <button id="utah-toggle">Utah</button>
+        <button id="bangladesh-toggle">Bangladesh</button>
+    </div>
     <div id="map"></div>
-    
+
     <script>
-        var map = L.map('map').setView([37.8, -96], 4); // Centered on the US
+        var map = L.map('map').setView([37.8, -96], 4);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
+        var londonLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
             layers: 'HS-53ed95e623f74c0996d048258afbe150:london',
             format: 'image/png',
             transparent: true,
             attribution: 'Hydroshare GeoServer'
-        }).addTo(map);
-        
-        L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
+        });
+
+        var bangladeshLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
             layers: 'HS-53ed95e623f74c0996d048258afbe150:Bangladesh',
             format: 'image/png',
             transparent: true,
             attribution: 'Hydroshare GeoServer'
-        }).addTo(map);
-        
-        L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
+        });
+
+        var utahLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
             layers: 'HS-53ed95e623f74c0996d048258afbe150:UTAH',
             format: 'image/png',
             transparent: true,
             attribution: 'Hydroshare GeoServer'
-        }).addTo(map);
-        
+        });
+
+        // Initially add the layers (or don't, if you want them off by default)
+        londonLayer.addTo(map);
+        bangladeshLayer.addTo(map);
+        utahLayer.addTo(map);
+
+
         var locations = {
-            london: { lat: 51.5074, lng: -0.1278, zoom: 10 },
-            utah: { lat: 39.3210, lng: -111.0937, zoom: 7 },
-            bangladesh: { lat: 23.6850, lng: 90.3563, zoom: 7 }
+            london: { layer: londonLayer, lat: 51.5074, lng: -0.1278, zoom: 10 },
+            utah: { layer: utahLayer, lat: 39.3210, lng: -111.0937, zoom: 7 },
+            bangladesh: { layer: bangladeshLayer, lat: 23.6850, lng: 90.3563, zoom: 7 }
         };
 
         document.getElementById('location-select').addEventListener('change', function() {
@@ -79,35 +102,64 @@
             if (selectedLocation && locations[selectedLocation]) {
                 var loc = locations[selectedLocation];
                 map.setView([loc.lat, loc.lng], loc.zoom);
+                // Show only the selected layer and hide the others
+                for (const location in locations) {
+                    if (locations.hasOwnProperty(location)) {
+                        const otherLoc = locations[location];
+                        if (otherLoc.layer !== loc.layer) {
+                            map.removeLayer(otherLoc.layer);
+                        } else if (!map.hasLayer(loc.layer)) {  // Add layer if not already on the map
+                            loc.layer.addTo(map);
+                        }
+                    }
+                }
+
+            } else { // If no location is selected, you might want to remove all WMS layers.
+                for (const location in locations) {
+                    if (locations.hasOwnProperty(location)) {
+                        map.removeLayer(locations[location].layer);
+                    }
+                }
             }
         });
+
+        // Toggle button functionality
+        document.getElementById('london-toggle').addEventListener('click', function() {
+            toggleLayer(londonLayer);
+        });
+        document.getElementById('utah-toggle').addEventListener('click', function() {
+            toggleLayer(utahLayer);
+        });
+        document.getElementById('bangladesh-toggle').addEventListener('click', function() {
+            toggleLayer(bangladeshLayer);
+        });
+
+        function toggleLayer(layer) {
+            if (map.hasLayer(layer)) {
+                map.removeLayer(layer);
+            } else {
+                map.addLayer(layer);
+            }
+        }
+
+
     </script>
 
     <h2><center>WMS Layer Code</center></h2>
     <pre><code>
-    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
-        layers: 'HS-53ed95e623f74c0996d048258afbe150:london',
-        format: 'image/png',
-        transparent: true,
-        attribution: 'Hydroshare GeoServer'
-    }).addTo(map);
-    
-        L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
-        layers: 'HS-53ed95e623f74c0996d048258afbe150:UTAH',
-        format: 'image/png',
-        transparent: true,
-        attribution: 'Hydroshare GeoServer'
-    }).addTo(map);
-    
-    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
-        layers: 'HS-53ed95e623f74c0996d048258afbe150:Bangladesh',
-        format: 'image/png',
-        transparent: true,
-        attribution: 'Hydroshare GeoServer'
-    }).addTo(map);
-    
-    <center>Here, "53ed95e623f74c0996d048258afbe150" is my Hydroshare Resource ID.</center>
+    // ... (WMS Layer code as before, but now stored in variables) ...
+    var londonLayer = L.tileLayer.wms(...);
+    var bangladeshLayer = L.tileLayer.wms(...);
+    var utahLayer = L.tileLayer.wms(...);
 
+    // Toggle function
+    function toggleLayer(layer) {
+        if (map.hasLayer(layer)) {
+            map.removeLayer(layer);
+        } else {
+            map.addLayer(layer);
+        }
+    }
     </code></pre>
 </body>
 </html>
