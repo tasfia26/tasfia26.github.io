@@ -145,21 +145,31 @@
 
     </script>
 
-    <h2><center>WMS Layer Code</center></h2>
+     <h2><center>WMS Layer Code</center></h2>
     <pre><code>
-    // ... (WMS Layer code as before, but now stored in variables) ...
-    var londonLayer = L.tileLayer.wms(...);
-    var bangladeshLayer = L.tileLayer.wms(...);
-    var utahLayer = L.tileLayer.wms(...);
-
-    // Toggle function
-    function toggleLayer(layer) {
-        if (map.hasLayer(layer)) {
-            map.removeLayer(layer);
-        } else {
-            map.addLayer(layer);
-        }
-    }
+    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
+        layers: 'HS-53ed95e623f74c0996d048258afbe150:london',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'Hydroshare GeoServer'
+    }).addTo(map);
+    
+    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
+        layers: 'HS-53ed95e623f74c0996d048258afbe150:UTAH',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'Hydroshare GeoServer'
+    }).addTo(map);
+    
+    L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-53ed95e623f74c0996d048258afbe150/wms', {
+        layers: 'HS-53ed95e623f74c0996d048258afbe150:Bangladesh',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'Hydroshare GeoServer'
+    }).addTo(map);
+    
+    Here, "53ed95e623f74c0996d048258afbe150" is my Hydroshare Resource ID.
     </code></pre>
+
 </body>
 </html>
