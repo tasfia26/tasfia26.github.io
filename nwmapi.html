@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Streamflow Forecast - National Water Model</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+
+    .content-box {
+      width: 80%;
+      margin: auto;
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #0056b3;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    ul {
+      list-style-type: square;
+      text-align: left;
+      margin: auto;
+      width: fit-content;
+    }
+
+    li a {
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+    }
+
+    li a:hover {
+      text-decoration: underline;
+    }
+
+    .info-box {
+      margin: 15px auto;
+      padding: 10px;
+      width: 80%;
+      background: #e9f5ff;
+      border-left: 5px solid #007bff;
+      text-align: left;
+    }
+
+    input {
+      padding: 8px;
+      margin: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #error-message {
+      color: red;
+      font-weight: bold;
+    }
+
+    /* Styled Table */
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    /* Make Graph Larger and Clearer */
+    .chart-container {
+      width: 90%;
+      max-width: 1200px;
+      height: 600px; /* Increased height for better visibility */
+      margin: 20px auto;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    canvas {
+      width: 100% !important; /* Ensure full width */
+      height: 100% !important; /* Ensure full height */
+      display: block; /* Remove any unwanted margin/padding */
+    }
+
+    /* "How it Works" Section */
+    .how-it-works {
+      background-color: #f8f9fa;
+      padding: 40px;
+      margin-top: 50px;
+      text-align: left;
+      width: 80%;
+      margin: 50px auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .how-it-works h2 {
+      text-align: center;
+      color: #0056b3;
+    }
+
+    .how-it-works ol {
+      margin-left: 30px;
+    }
+
+    .how-it-works li {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- National Water Model Section -->
+  <div class="content-box">
+    <h1>National Water Model Streamflow Forecast</h1>
+    <p>The <strong>National Water Model (NWM)</strong> is a hydrologic model that simulates streamflow for the United States. 
+      It provides short-term, medium-term, and long-term forecasts to help with water resource management and flood monitoring.</p>
+    
+    <h2>Learn More:</h2>
+    <ul>
+      <li><a href="https://water.noaa.gov/about/nwm" target="_blank">About the National Water Model</a></li>
+      <li><a href="https://www.sciencedirect.com/science/article/pii/S1364815224001841" target="_blank">Research on NWM in ScienceDirect</a></li>
+      <li><a href="https://onlinelibrary.wiley.com/doi/full/10.1111/1752-1688.13184" target="_blank">Research on NOAA's National Water Model</a></li>
+    </ul>
+  </div>
+
+  <!-- Reach ID Retrieval Information -->
+  <div class="info-box">
+    <p>📌 <strong>You can retrieve the Reach ID from:</strong> 
+      <a href="https://water.noaa.gov/" target="_blank">https://water.noaa.gov/</a></p>
+  </div>
+
+  <!-- Reach ID Input Section -->
+  <label for="reachIdInput">Enter Reach ID:</label>
+  <input type="text" id="reachIdInput" placeholder="Enter Reach ID">
+  <button onclick="getForecast()">Get Forecast</button>
+  
+  <p id="error-message" style="display: none;"></p>
+
+  <!-- Table for Forecast Data -->
+  <table id="timeseries-datatable" style="display: none">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Flow Value (cfs)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  
+  <!-- Graph for Streamflow Forecast -->
+  <div class="chart-container">
+    <canvas id="streamflowChart"></canvas>
+  </div>
+
+  <script>
+    let chartInstance = null; // Track chart instance
+
+    async function getForecast() {
+        try {
+            const reachId = document.getElementById('reachIdInput').value.trim();
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.style.display = "none"; 
+
+            if (!reachId) {
+                errorMessage.textContent = "Please enter a valid Reach ID.";
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=short_range`;
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+
+            const json_data = await response.json();
+
+            if (!json_data || !json_data.shortRange || !json_data.shortRange.series || !json_data.shortRange.series.data) {
+                throw new Error("No forecast data available for this Reach ID.");
+            }
+
+            const streamflowData = json_data.shortRange.series.data;
+
+            if (streamflowData.length === 0) {
+                throw new Error("No streamflow data found for this Reach ID.");
+            }
+
+            const timestamps = streamflowData.map(item => new Date(item.validTime).toLocaleString());
+            const flowValues = streamflowData.map(item => item.flow.toFixed(2));
+
+            // Populate table
+            const tableElement = document.getElementById('timeseries-datatable');
+            tableElement.style.display = 'block';
+            const tableBody = tableElement.getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = "";
+
+            for (let i = 0; i < timestamps.length; i++) {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = timestamps[i]; 
+                row.insertCell().textContent = flowValues[i] + " cfs"; 
+            }
+
+            // Destroy previous chart instance if it exists
+            if (chartInstance !== null) {
+                chartInstance.destroy();
+            }
+
+            // Get chart canvas context
+            const ctx = document.getElementById('streamflowChart').getContext('2d');
+            
+            // Create new chart instance
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timestamps,
+                    datasets: [{
+                        label: `Streamflow Forecast for Reach ${reachId}`,
+                        data: flowValues,
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 4, 
+                        pointBackgroundColor: 'red',
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { display: true, title: { display: true, text: 'Time' } },
+                        y: { display: true, title: { display: true, text: 'Streamflow (cfs)' } }
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('Error fetching or processing data:', error);
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = error.message;
+            errorMessage.style.display = "block";
+        }
+    }
+  </script>
+
+  <!-- How it Works Section -->
+  <div class="how-it-works">
+    <h2>How It Works</h2>
+    <ol>
+      <li>Enter a valid Reach ID in the input box.</li>
+      <li>Click "Get Forecast" to retrieve the streamflow data from the National Water Model.</li>
+      <li>View the forecasted streamflow values over time in the table below the graph.</li>
+      <li>The graph visualizes the streamflow forecast, showing the flow values for the specified reach ID.</li>
+      <li>Use the data and graph to understand the potential streamflow over the next few hours or days for water resource management.</li>
+      <p>
+      This web application uses the NOAA NWPS API to receive NWM short-range forecasts. The user inputs a Reach ID, which is a river segment's unique identification. The forecast data linked to the Reach ID is then requested by the application from the NOAA API. Following the retrieval of the data (time and streamflow numbers), a table is shown, and Chart.js is used to visualize the data in a chart. An alert message is shown to notify the user in the event that an error occurs during the API call or data processing.
+      </p>
+      <p><strong>The API endpoint used is: `https://api.water.noaa.gov/nwps/v1/reaches/{reachId}/streamflow?series=short_range`.</strong></p>
+       
+      <p>The `{reachId}` portion is replaced with the Reach ID entered by the user.
+      
+      </p>
+
+<p>The code first fetches the data from the API. It then parses the JSON response and extracts the timestamps and flow values. These values are then used to populate the table and create the chart. The chart is a line graph showing the streamflow over time.
+      </p>
+    </ol>
+  </div>
+
+</body>
+</html>
