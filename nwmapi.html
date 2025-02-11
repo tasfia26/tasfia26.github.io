@@ -165,6 +165,18 @@
     </ul>
   </div>
 
+<section>
+            <h2>Enter Reach ID:</h2>
+            <p>Browse the National Water Prediction Service website to find the Reach ID of your water system of interest.</p>
+            <div class="map-container">
+                <iframe src="https://water.noaa.gov/#@=-92.0865368,37.2143851,3.8382164&b=topographic"></iframe>
+            </div>
+            <div class="input-section">
+                <input type="text" id="reachIdInput" placeholder="Enter a Reach ID (e.g., 10274616)">
+                <button onclick="getForecast()">Get Forecast</button>
+            </div>
+        </section>
+  
   <!-- Reach ID Retrieval Information -->
   <div class="info-box">
     <p>📌 <strong>You can retrieve the Reach ID from:</strong> 
