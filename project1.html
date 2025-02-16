@@ -20,11 +20,15 @@
             object-fit: cover;
             border: 3px solid white;
         }
+        /* Left panel with background image */
         .left-panel {
-            background: #333;
+            background: url('background.jpg') no-repeat center center/cover; /* Change 'background.jpg' to your image */
             padding: 20px;
             border-radius: 10px;
+            color: white;
+            min-height: 350px;
         }
+        /* Right panel with a solid background */
         .right-panel {
             background: #444;
             padding: 20px;
@@ -32,6 +36,21 @@
         }
         ul {
             list-style-type: square;
+        }
+        /* Heading Colors */
+        h2 {
+            color: #ffcc00; /* Gold color for main heading */
+        }
+        h4 {
+            color: #66ffcc; /* Light green for subheadings */
+        }
+        /* Image outside the box */
+        .outside-image {
+            display: block;
+            margin: 20px auto; /* Center the image */
+            width: 80%; /* Adjust width */
+            max-width: 600px; /* Set a max width */
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -63,6 +82,9 @@
             <p>I use JavaScript, Leaflet, and Tethys for developing web-based GIS applications.</p>
         </div>
     </div>
+
+    <!-- Image Outside the Box -->
+    <img src="hydropower1.jpg" alt="Hydro Power Expansion for Duke Energy in South Carolina" class="outside-image">
 </div>
 
 </body>
