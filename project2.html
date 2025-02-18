@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Webpage</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        body {
+            background-color: #222; /* Dark background */
+            color: white;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+        .left-panel {
+            background: url('hydropower1.jpg') no-repeat center center/cover;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            min-height: 400px;
+        }
+        .right-panel {
+            background: #444;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        ul {
+            list-style-type: square;
+        }
+        h2 {
+            color: #ffcc00; 
+        }
+        h4 {
+            color: #66ffcc;
+        }
+        #map {
+            width: 100%;
+            height: 500px;
+            margin-top: 20px;
+        }
+        .checkbox-container {
+            background: white;
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+        }
+        .checkbox-container label {
+            margin-left: 5px;
+        }
+        .contact-info {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+        .contact-info i {
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <!-- Left Panel -->
+        <div class="col-md-4 left-panel">
+            <div class="text-center">
+                <img src="image.png" alt="My Picture" class="profile-img">
+            </div>
+            <h3 class="text-center mt-3">Tasfia Mahjarin</h3>
+            <ul class="mt-3">
+                <li>GIS Researcher</li>
+                <li>Graduate Student at BYU</li>
+                <li>Interested in Web Mapping</li>
+                <li>Learning EPANET & HydroShare</li>
+            </ul>
+
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <h4>📩 Contact Information</h4>
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:tmahjarin@gmail.com" style="color:#ffcc00;">tmahjarin@gmail.com</a></p>
+                <p><i class="fas fa-envelope"></i> BYU Email: <a href="mailto:tasfia26@byu.edu" style="color:#ffcc00;">tasfia26@byu.edu</a></p>
+                <p><i class="fas fa-phone"></i> Contact: <a href="tel:+18019197932" style="color:#ffcc00;">+1 801 919 7932</a></p>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="col-md-8 right-panel">
+            <h2> <center>Welcome to CE-514 HydroPower Generation for Duke Energy Porgress Station in South Carolina</center></h2>
+            <p>This page serves as my portfolio where I share my GIS research, interactive maps, and projects.</p>
+            <h4>Current Projects</h4>
+            <p>Developing an interactive web map using Leaflet, integrating National Water Model forecasts and HydroShare data.</p>
+            <h4>Technologies Used</h4>
+            <p>JavaScript, Leaflet, and Tethys for developing web-based GIS applications.</p>
+
+            <!-- Map Section -->
+            <h4>Interactive Web Map</h4>
+            <div id="map"></div>
+
+            <!-- Layer Control Checkboxes -->
+            <div class="checkbox-container">
+                <strong>Toggle Layers:</strong><br>
+                <input type="checkbox" id="polygonNewCheckbox" checked> <label for="polygonNewCheckbox">PolygonNew Layer</label><br>
+                <input type="checkbox" id="exportedReachCheckbox" checked> <label for="exportedReachCheckbox">ExportedReach Layer</label><br>
+                <input type="checkbox" id="exportedReachIDCheckbox" checked> <label for="exportedReachIDCheckbox">ExportedReachID Layer</label><br>
+                <input type="checkbox" id="dukeProgreeStationPointCheckbox" checked> <label for="dukeProgreeStationPointCheckbox">Duke Progress Station Point Layer</label><br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize the map centered on South Carolina
+    var map = L.map('map').setView([33.7000, -79.8520], 10); 
+
+    // Add OpenStreetMap base layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Define WMS Layers
+    var PolygonNewLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:PolygonNew',
+        format: 'image/png',
+        transparent: true
+    });
+
+    var ExportedReachLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:ExportedReach',
+        format: 'image/png',
+        transparent: true
+    });
+
+    var ExportedReachIDLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:ExportedReachID',
+        format: 'image/png',
+        transparent: true
+    });
+
+    var DukeProgreeStationPointLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:DukeProgreeStationPoint',
+        format: 'image/png',
+        transparent: true
+    });
+
+    // Add all layers to the map by default
+    PolygonNewLayer.addTo(map);
+    ExportedReachLayer.addTo(map);
+    ExportedReachIDLayer.addTo(map);
+    DukeProgreeStationPointLayer.addTo(map);
+</script>
+
+</body>
+</html>
