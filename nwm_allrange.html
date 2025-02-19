@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <title>Streamflow Forecast</title>
+
+  <script src=https://cdn.jsdelivr.net/npm/chart.js></script>
+
+</head>
+
+<body>
+
+  <button onclick="getForecastFromButton ('9090086')">Reach 9090086</button>
+  <button onclick="getForecastFromButton('9090088')">Reach 9090088</button>
+  <button onclick="getForecastFromButton('9090122')">Reach 9090122</button>
+  <button onclick="getForecastFromButton('9090124')">Reach 9090124</button>
+  <button onclick="getForecastFromButton('9090132')">Reach 9090132</button>
+  <button onclick="getForecastFromButton('9090136')">Reach 9090136</button>
+  <button onclick="getForecastFromButton('9090138')">Reach 9090138</button>
+  <button onclick="getForecastFromButton('9090262')">Reach 9090262</button>
+  <button onclick="getForecastFromButton('9090922')">Reach 9090922</button>
+  
+  <label for="ForecastType">Select a forecast:</label>
+    <select name="ForecastType" id="ForecastType" onChange="getForecastFromDropdown(this.value)">
+    <option value="short_range">short_range</option>
+    <option value="medium_range">medium_range</option>
+    <option value="long_range">long_range</option>
+    </select>
+
+
+
+  <table id="timeseries-datatable" style="display: none">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Flow value</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  
+  <canvas id="streamflowChart"></canvas>
+
+  <script>
+    var tried = 0;
+    var current_reach = 0;
+    const chartElementCatcher = document.getElementById('streamflowChart' );
+    chartElementCatcher.style.display = 'none';
+    const ctx = chartElementCatcher.getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [1,2,3,4,5],
+            datasets: [{
+                label: 'Streamflow Forecast',
+                data: [1,200,300,400,500],
+                borderColor: 'blue',
+                borderWidth: 1,
+                fill: false}]
+            },
+        options: {
+            responsive: true,
+            plugins: {
+            title: {
+                display: true,
+                text: '',
+                padding: {
+                    top: 10,
+                    bottom: 30
+                }}},
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Time'}
+                    },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Streamflow'}    
+                    } 
+                }
+            }
+        });
+    
+    function getForecastFromButton (reachId) {
+        const type = document.getElementById('ForecastType').value;
+        getForecast(reachId, type);
+    }
+    function getForecastFromDropdown (type) {
+        const reachId = current_reach;
+        getForecast(reachId, type);
+    }
+    async function getForecast(reachId, type) {
+        try {
+            current_reach = reachId;
+            if (type==='short_range') {
+                type_access = 'json_data.shortRange.series.data';
+            }
+            else if (type==='medium_range') {
+                type_access = 'json_data.mediumRange.mean.data';
+            }
+            else {
+                type_access = 'json_data.longRange.mean.data';
+            };
+            const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${type}`;
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+            throw new Error(`HTTP error status: ${response.status}`);
+            };
+            const json_data = await response.json();
+            const streamflowData = eval(type_access);
+            const timestamps = streamflowData.map(item => item.validTime);
+            const flowValues = streamflowData.map(item => item.flow);
+            console.log(tried);
+            const tableElementCatcher = document.getElementById('timeseries-datatable');
+            tableElementCatcher.style.display = 'block';
+            const table = tableElementCatcher.getElementsByTagName('tbody')[0];
+            if (tried > 0) {
+                table.innerHTML = '';
+            }
+            const maxLength = Math.max(timestamps.length, flowValues.length);
+            for (let i = 0; i < maxLength; i++) {
+                const row = table.insertRow();
+                const timestampCell = row.insertCell();
+                const flowCell = row.insertCell();
+                timestampCell.textContent = timestamps[i] || ""; 
+                flowCell.textContent = flowValues[i] || ""; 
+            };
+            chart.data.datasets[0].data = flowValues;
+            chart.data.labels = timestamps;
+            chart.update();
+            chartElementCatcher.style.display = 'block';
+            tried += 1;
+            
+            }
+
+        catch (error) {
+            console.error('Error fetching or processing data:', error);
+            const chartCanvas = document.getElementById('streamflowChart');
+            chartCanvas.innerHTML = "<p>Error loading chart</p>";        
+        };
+
+    };
+
+  </script>
+
+</body>
+
+</html>
