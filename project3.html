@@ -97,26 +97,47 @@
     }
 
     table {
-      width: 60%;
-      margin: 20px auto;
-      border-collapse: collapse;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
+  width: 60%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  background-color: #333; /* Slightly lighter dark background for the table */
+}
 
-    th, td {
-      padding: 10px;
-      border: 1px solid #ddd;
-      text-align: center;
-    }
+th, td {
+  padding: 10px;
+  border: 1px solid #555; /* Lighter border for better visibility */
+  text-align: center;
+  color: white; /* White text for contrast */
+}
 
-    th {
-      background-color: #007bff;
-      color: white;
-    }
+th {
+  background-color: #007bff; /* Blue header background for better visibility */
+  color: white;
+}
 
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
+tr:nth-child(even) {
+  background-color: #444; /* Dark gray for even rows */
+}
+
+tr:nth-child(odd) {
+  background-color: #555; /* Medium gray for odd rows */
+}
+
+tr:hover {
+  background-color: #666; /* Slightly lighter gray on hover */
+}
+
+.chart-container {
+  border: 2px solid #66ffcc;  /* Light cyan border around the chart */
+  border-radius: 8px;         /* Rounded corners for the border */
+  padding: 15px;              /* Padding inside the border */
+  background-color: #f1f1f1;  /* Light background for the chart */
+  max-width: 90%;             /* Ensure the chart doesn't exceed 90% of the screen width */
+  margin: auto;               /* Center the chart */
+}
+
+
     </style>
 </head>
 <body>
@@ -192,6 +213,8 @@
 </div>
 <h2>Streamflow Forecast</h2>
 
+<!-- Reach ID buttons -->
+<div id="reachButtons">
   <button onclick="getForecastFromButton('9090086')">Reach 9090086</button>
   <button onclick="getForecastFromButton('9090088')">Reach 9090088</button>
   <button onclick="getForecastFromButton('9090122')">Reach 9090122</button>
@@ -201,25 +224,28 @@
   <button onclick="getForecastFromButton('9090138')">Reach 9090138</button>
   <button onclick="getForecastFromButton('9090262')">Reach 9090262</button>
   <button onclick="getForecastFromButton('9090922')">Reach 9090922</button>
+</div>
+  <!-- Forecast Type Dropdown (Moved here) -->
+<label for="ForecastType">Select a forecast:</label>
+<select name="ForecastType" id="ForecastType" onchange="getForecastFromDropdown(this.value)">
+  <option value="short_range">Short Range</option>
+  <option value="medium_range">Medium Range</option>
+  <option value="long_range">Long Range</option>
+</select>
 
-  <label for="ForecastType">Select a forecast:</label>
-  <select name="ForecastType" id="ForecastType" onchange="getForecastFromDropdown(this.value)">
-    <option value="short_range">Short Range</option>
-    <option value="medium_range">Medium Range</option>
-    <option value="long_range">Long Range</option>
-  </select>
+<!-- Timeseries Data Table -->
+<table id="timeseries-datatable" style="display: none">
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Flow Value (cfs)</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
-  <table id="timeseries-datatable" style="display: none">
-    <thead>
-      <tr>
-        <th>Timestamp</th>
-        <th>Flow Value</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <canvas id="streamflowChart"></canvas>
+<!-- Streamflow Chart -->
+<canvas id="streamflowChart"></canvas>
 <script>
     // Initialize the map centered on South Carolina
     var map = L.map('map').setView([33.7000, -79.8520], 10); 
@@ -301,38 +327,60 @@
     chartElement.style.display = 'none';
     const ctx = chartElement.getContext('2d');
     const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [{
-          label: 'Streamflow Forecast',
-          data: [],
-          borderColor: 'blue',
-          borderWidth: 1,
-          fill: false
-        }]
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Streamflow Forecast',
+      data: [],
+      borderColor: '#66ffcc',  // Lighter color (light cyan)
+      borderWidth: 2,
+      fill: false,
+      pointBackgroundColor: '#66ffcc',  // Lighter point color
+      pointBorderColor: '#ffffff', // White border for points
+      pointBorderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Streamflow Forecast Over Time',
+        padding: { top: 10, bottom: 30 }
+      }
+    },
+    scales: {
+      x: {
+        display: true,
+        title: { display: true, text: 'Time' },
+        grid: {
+          color: '#555' // Lighter grid lines
+        }
       },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Streamflow Forecast Over Time',
-            padding: { top: 10, bottom: 30 }
-          }
-        },
-        scales: {
-          x: {
-            display: true,
-            title: { display: true, text: 'Time' }
-          },
-          y: {
-            display: true,
-            title: { display: true, text: 'Streamflow (cfs)' }
-          }
+      y: {
+        display: true,
+        title: { display: true, text: 'Streamflow (cfs)' },
+        grid: {
+          color: '#555' // Lighter grid lines
         }
       }
-    });
+    },
+    elements: {
+      line: {
+        tension: 0.4 // Slight curve for smoother line
+      },
+      point: {
+        radius: 4, // Slightly larger points for better visibility
+        hoverRadius: 6, // Hover effect for points
+      }
+    },
+    layout: {
+      padding: { left: 20, right: 20, top: 20, bottom: 20 }
+    },
+    backgroundColor: '#ffffff'  // Light background for the chart itself
+  }
+});
 
     function getForecastFromButton(reachId) {
       const type = document.getElementById('ForecastType').value;
