@@ -369,6 +369,14 @@ tr:hover {
     const chartElement = document.getElementById('streamflowChart');
     chartElement.style.display = 'none';
     const ctx = chartElement.getContext('2d');
+    
+    // Define threshold values for each reach ID
+const reachThresholds = {
+  9090086: 15, // Example threshold for reach ID 10373692
+  9090088: 5, // Example threshold for another reach
+  // Add more reach IDs and thresholds as needed
+};
+    
     const chart = new Chart(ctx, {
   type: 'line',
   data: {
@@ -382,6 +390,14 @@ tr:hover {
       pointBackgroundColor: '#66ffcc',  // Lighter point color
       pointBorderColor: '#ffffff', // White border for points
       pointBorderWidth: 2
+      },
+      {
+        label: 'Threshold',
+        data: [],
+        borderColor: 'red', // Red color for threshold line
+        borderWidth: 2,
+        borderDash: [5, 5], // Dashed line
+        fill: false
     }]
   },
   options: {
@@ -472,9 +488,12 @@ tr:hover {
   row.insertCell().textContent = item.flow ? parseFloat(item.flow).toFixed(2) : "N/A";
 });
 
+// Get threshold value for the current reach, set a default if not found
+    const thresholdValue = reachThresholds[reachId] || "N/A";
 
         chart.data.labels = timestamps;
         chart.data.datasets[0].data = flowValues;
+        chart.data.datasets[1].data = timestamps.map(() => thresholdValue); // Add threshold line data
         chart.update();
         chartElement.style.display = 'block';
         tried += 1;
