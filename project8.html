@@ -336,6 +336,12 @@ var Layer9090922 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/H
         transparent: true
     });
 
+   var watershedLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:watershed',
+        format: 'image/png',
+        transparent: true
+    });
+
     // Add all layers to the map by default
     PolygonNewLayer.addTo(map);
     ExportedReachLayer.addTo(map);
@@ -351,7 +357,7 @@ var Layer9090922 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/H
     Layer9090138.addTo(map);
     Layer9090262.addTo(map);
     Layer9090922.addTo(map);
-
+    watershedLayer.addTo(map);
 
  // Add event listeners for the checkbox changes
     document.getElementById('polygonNewCheckbox').addEventListener('change', function () {
