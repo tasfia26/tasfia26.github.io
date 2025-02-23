@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Webpage</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #222; /* Dark background */
+            color: white;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+        .left-panel {
+            background: url('hydropower1.jpg') no-repeat center center/cover;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            min-height: 400px;
+        }
+        .right-panel {
+            background: #444;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        ul {
+            list-style-type: square;
+        }
+        h2 {
+            color: #ffcc00; 
+        }
+        h3 {
+            color: #ff6600; /* A warm orange color */
+            font-size: 1.2rem; /* Adjusts the size to be a bit smaller */
+        }
+
+        h4 {
+            color: #66ffcc;
+        }
+        #map {
+            width: 100%;
+            height: 500px;
+            margin-top: 20px;
+        }
+        .checkbox-container {
+            background: white;
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+        }
+        .checkbox-container label {
+            margin-left: 5px;
+        }
+        .contact-info {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+        .contact-info i {
+            color: #ffcc00;
+        }
+		button {
+      margin: 5px;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    select {
+      padding: 5px;
+      margin: 10px;
+    }
+
+    table {
+  width: 60%; /* You can adjust the width as needed */
+  margin: 20px auto; /* Centers the table horizontally */
+  border-collapse: collapse;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  background-color: #333; /* Slightly lighter dark background for the table */
+  text-align: center; /* Ensures text is centered inside the table */
+}
+th, td {
+  padding: 10px;
+  border: 1px solid #555; /* Lighter border for better visibility */
+  text-align: center;
+  color: white; /* White text for contrast */
+}
+
+th {
+  background-color: #007bff; /* Blue header background for better visibility */
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #444; /* Dark gray for even rows */
+}
+
+tr:nth-child(odd) {
+  background-color: #555; /* Medium gray for odd rows */
+}
+
+tr:hover {
+  background-color: #666; /* Slightly lighter gray on hover */
+}
+
+.chart-container {
+  border: 2px solid #66ffcc;  /* Light cyan border around the chart */
+  border-radius: 8px;         /* Rounded corners for the border */
+  padding: 15px;              /* Padding inside the border */
+  background-color: #f1f1f1;  /* Light background for the chart */
+  max-width: 90%;             /* Ensure the chart doesn't exceed 90% of the screen width */
+  margin: auto;               /* Center the chart */
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <!-- Left Panel -->
+        <div class="col-md-4 left-panel">
+            <div class="text-center">
+                <img src="image.png" alt="My Picture" class="profile-img">
+            </div>
+            <h3 class="text-center mt-3">Tasfia Mahjarin</h3>
+            <ul class="mt-3">
+                <li>GIS Researcher</li>
+                <li>Graduate Student at BYU</li>
+                <li>Interested in Web Mapping</li>
+                <li>Learning EPANET & HydroShare</li>
+            </ul>
+
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <h4>📩 Contact Information</h4>
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:tmahjarin@gmail.com" style="color:#ffcc00;">tmahjarin@gmail.com</a></p>
+                <p><i class="fas fa-envelope"></i> BYU Email: <a href="mailto:tasfia26@byu.edu" style="color:#ffcc00;">tasfia26@byu.edu</a></p>
+                <p><i class="fas fa-phone"></i> Contact: <a href="tel:+18019197932" style="color:#ffcc00;">+1 801 919 7932</a></p>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="col-md-8 right-panel">
+            <h2> <center>Welcome to CE-514 HydroPower Generation for Duke Energy Porgress Station in South Carolina</center></h2>
+            <p>The National Water Model (NWM) forecast provides critical data for hydropower generation, helping Duke Energy Progress optimize operations and improve efficiency. Here’s how:</p>
+
+        <h3>1. Optimized Water Resource Management</h3>
+        <p>The NWM provides real-time and future streamflow forecasts, enabling hydropower plants to schedule turbine operations effectively.</p>
+
+        <h3>2. Flood Risk Mitigation</h3>
+        <p>By predicting extreme weather events, the NWM helps operators manage reservoir levels and prevent flooding.</p>
+
+        <h3>3. Energy Demand and Supply Balancing</h3>
+        <p>Using water flow forecasts, power generation can be adjusted to match electricity demand, ensuring grid stability.</p>
+
+        <h3>4. Drought and Low-Flow Management</h3>
+        <p>Long-term forecasts assist in conserving water storage and planning for drought conditions.</p>
+
+        <h3>5. Environmental and Regulatory Compliance</h3>
+        <p>Hydropower plants can use NWM data to maintain minimum environmental flows and comply with regulations.</p>
+
+        <h3>6. Dam Safety and Infrastructure Protection</h3>
+        <p>Forecasts allow operators to assess risks to dam structures and take preventive actions.</p>
+
+        <h3>7. Hydropower Expansion and Planning</h3>
+        <p>Historical and predicted water availability trends from the NWM support feasibility studies for new hydropower projects.</p>
+            <h4>Current Projects</h4>
+            <p>Developing an interactive web map using Leaflet, integrating National Water Model forecasts and HydroShare data.</p>
+            <h4>Technologies Used</h4>
+            <p>JavaScript, Leaflet, and Tethys for developing web-based GIS applications.</p>
+
+            <!-- Map Section -->
+            <h4>Interactive Web Map</h4>
+            <div id="map"></div>
+
+            <!-- Layer Control Checkboxes -->
+            <div class="checkbox-container">
+                <strong>Toggle Layers:</strong><br>
+                <input type="checkbox" id="polygonNewCheckbox" checked> <label for="polygonNewCheckbox">PolygonNew Layer</label><br>
+                <input type="checkbox" id="exportedReachCheckbox" checked> <label for="exportedReachCheckbox">ExportedReach Layer</label><br>
+                <input type="checkbox" id="exportedReachIDCheckbox" checked> <label for="exportedReachIDCheckbox">ExportedReachID Layer</label><br>
+                <input type="checkbox" id="dukeProgreeStationPointCheckbox" checked> <label for="dukeProgreeStationPointCheckbox">Duke Progress Station Point Layer</label><br>
+            </div>
+        </div>
+    </div>
+</div>
+<h2>Streamflow Forecast</h2>
+
+<!-- Reach ID buttons -->
+<div id="reachButtons">
+  <button onclick="getForecastFromButton('9090086');  individualReachOnMap('9090086');">Reach 9090086</button>
+  <button onclick="getForecastFromButton('9090088');  individualReachOnMap('9090088')">Reach 9090088</button>
+  <button onclick="getForecastFromButton('9090122');  individualReachOnMap('9090122')">Reach 9090122</button>
+  <button onclick="getForecastFromButton('9090124');  individualReachOnMap('9090124')">Reach 9090124</button>
+  <button onclick="getForecastFromButton('9090132');  individualReachOnMap('9090132')">Reach 9090132</button>
+  <button onclick="getForecastFromButton('9090136');  individualReachOnMap('9090136')">Reach 9090136</button>
+  <button onclick="getForecastFromButton('9090138');  individualReachOnMap('9090138')">Reach 9090138</button>
+  <button onclick="getForecastFromButton('9090262');  individualReachOnMap('9090262')">Reach 9090262</button>
+  <button onclick="getForecastFromButton('9090922');  individualReachOnMap('9090922')">Reach 9090922</button>
+</div>
+  <!-- Forecast Type Dropdown (Moved here) -->
+<label for="ForecastType">Select a forecast:</label>
+<select name="ForecastType" id="ForecastType" onchange="getForecastFromDropdown(this.value)">
+  <option value="short_range">Short Range</option>
+  <option value="medium_range">Medium Range</option>
+  <option value="long_range">Long Range</option>
+</select>
+
+<!-- Timeseries Data Table -->
+<table id="timeseries-datatable" style="display: none">
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Flow Value (cfs)</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<!-- Streamflow Chart -->
+<canvas id="streamflowChart"></canvas>
+<script>
+    // Initialize the map centered on South Carolina
+    var map = L.map('map').setView([33.7000, -79.8520], 10); 
+
+    // Add OpenStreetMap base layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Define WMS Layers
+    var watershedLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:watershed',
+        format: 'image/png',
+        transparent: true
+    });
+
+    var ExportedReachLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:ExportedReach',
+        format: 'image/png',
+        transparent: true
+    });
+
+    var ExportedReachIDLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:ExportedReachID',
+        format: 'image/png',
+        transparent: true
+    });
+
+    var DukeProgreeStationPointLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:DukeProgreeStationPoint',
+        format: 'image/png',
+        transparent: true
+    });
+
+   var Layer9090086 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:9090086',
+        format: 'image/png',
+        transparent: true
+    });
+
+  var Layer9090088 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:9090088',
+        format: 'image/png',
+        transparent: true
+    });
+
+var Layer9090122 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:9090122',
+        format: 'image/png',
+        transparent: true
+    });
+
+var Layer9090124 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:9090124',
+        format: 'image/png',
+        transparent: true
+    });
+
+var Layer9090132 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:9090132',
+        format: 'image/png',
+        transparent: true
+    });
+
+var Layer9090136 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:9090136',
+        format: 'image/png',
+        transparent: true
+    });
+
+var Layer9090138 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:9090138',
+        format: 'image/png',
+        transparent: true
+    });
+
+var Layer9090262 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:9090262',
+        format: 'image/png',
+        transparent: true
+    });
+
+var Layer9090922 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6541b17cd7314ca5b801314106f072d7/wms', {
+        layers: 'HS-6541b17cd7314ca5b801314106f072d7:9090922',
+        format: 'image/png',
+        transparent: true
+    });
+
+    // Add all layers to the map by default
+    PolygonNewLayer.addTo(map);
+    ExportedReachLayer.addTo(map);
+    ExportedReachIDLayer.addTo(map);
+    DukeProgreeStationPointLayer.addTo(map);
+    Layer9090086.addTo(map);
+    Layer9090088.addTo(map);
+    Layer9090122.addTo(map);
+    Layer9090086.addTo(map);
+    Layer9090124.addTo(map);
+    Layer9090132.addTo(map);
+    Layer9090136.addTo(map);
+    Layer9090138.addTo(map);
+    Layer9090262.addTo(map);
+    Layer9090922.addTo(map);
+
+
+ // Add event listeners for the checkbox changes
+    document.getElementById('polygonNewCheckbox').addEventListener('change', function () {
+        if (this.checked) {
+            PolygonNewLayer.addTo(map);
+        } else {
+            map.removeLayer(PolygonNewLayer);
+        }
+    });
+
+    document.getElementById('exportedReachCheckbox').addEventListener('change', function () {
+        if (this.checked) {
+            ExportedReachLayer.addTo(map);
+        } else {
+            map.removeLayer(ExportedReachLayer);
+        }
+    });
+
+    document.getElementById('exportedReachIDCheckbox').addEventListener('change', function () {
+        if (this.checked) {
+            ExportedReachIDLayer.addTo(map);
+        } else {
+            map.removeLayer(ExportedReachIDLayer);
+        }
+    });
+
+    document.getElementById('dukeProgreeStationPointCheckbox').addEventListener('change', function () {
+        if (this.checked) {
+            DukeProgreeStationPointLayer.addTo(map);
+        } else {
+            map.removeLayer(DukeProgreeStationPointLayer);
+        }
+    });
+
+    // Add event listener to the map for click events
+    map.on('click', function (e) {
+        // Get the lat/lng of the clicked location
+        var latlng = e.latlng;
+
+        // Perform a GetFeatureInfo request to the WMS layer
+        var infoUrl = ExportedReachLayer.getFeatureInfoUrl(latlng, {
+            'info_format': 'application/json',
+            'query_layers': 'HS-6541b17cd7314ca5b801314106f072d7:ExportedReach'
+        });
+
+        if (infoUrl) {
+            fetch(infoUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Check if there are features at the clicked point
+                    if (data && data.features && data.features.length > 0) {
+                        var feature = data.features[0];
+                        var reachID = feature.properties.reachID; // Assuming 'reachID' is the property name
+                        
+                        // Create and open a popup with the reachID
+                        L.popup()
+                            .setLatLng(latlng)
+                            .setContent('Reach ID: ' + reachID)
+                            .openOn(map);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching feature info:', error);
+                });
+        }
+    });
+	
+	
+	var tried = 0;
+    var current_reach = 0;
+    const chartElement = document.getElementById('streamflowChart');
+    chartElement.style.display = 'none';
+    const ctx = chartElement.getContext('2d');
+    
+    // Define threshold values for each reach ID
+const reachThresholds = {
+  9090086: 15, // Example threshold for reach ID 10373692
+  9090088: 5, // Example threshold for another reach
+  9090122: 5, 
+  9090124: 5, 
+  9090132: 20, 
+  9090136: 830, 
+  9090138: 10, 
+  9090262: 820, 
+  9090922: 825, 
+
+  // Add more reach IDs and thresholds as needed
+};
+    
+    const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Streamflow Forecast',
+      data: [],
+      borderColor: '#66ffcc',  // Lighter color (light cyan)
+      borderWidth: 2,
+      fill: false,
+      pointBackgroundColor: '#66ffcc',  // Lighter point color
+      pointBorderColor: '#ffffff', // White border for points
+      pointBorderWidth: 2
+      },
+      {
+        label: 'Threshold',
+        data: [],
+        borderColor: 'red', // Red color for threshold line
+        borderWidth: 2,
+        borderDash: [5, 5], // Dashed line
+        fill: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Streamflow Forecast Over Time',
+        padding: { top: 10, bottom: 30 }
+      }
+    },
+    scales: {
+      x: {
+        display: true,
+        title: { display: true, text: 'Time' },
+        grid: {
+          color: '#555' // Lighter grid lines
+        }
+      },
+      y: {
+        display: true,
+        title: { display: true, text: 'Streamflow (cfs)' },
+        grid: {
+          color: '#555' // Lighter grid lines
+        }
+      }
+    },
+    elements: {
+      line: {
+        tension: 0.4 // Slight curve for smoother line
+      },
+      point: {
+        radius: 4, // Slightly larger points for better visibility
+        hoverRadius: 6, // Hover effect for points
+      }
+    },
+    layout: {
+      padding: { left: 20, right: 20, top: 20, bottom: 20 }
+    },
+    backgroundColor: '#ffffff'  // Light background for the chart itself
+  }
+});
+
+var individualLayer = "";
+function individualReachOnMap(reachId) {
+	if (individualLayer != "") {map.removeLayer(individualLayer);};
+	const reachLayer = eval("Layer" + reachId);
+	reachLayer.addTo(map);
+	individualLayer = reachLayer;
+
+}
+
+    function getForecastFromButton(reachId) {
+      const type = document.getElementById('ForecastType').value;
+      getForecast(reachId, type);
+    }
+
+    function getForecastFromDropdown(type) {
+      getForecast(current_reach, type);
+    }
+
+    async function getForecast(reachId, type) {
+      try {
+        current_reach = reachId;
+        let type_access;
+        if (type === 'short_range') {
+          type_access = 'json_data.shortRange.series.data';
+        } else if (type === 'medium_range') {
+          type_access = 'json_data.mediumRange.mean.data';
+        } else {
+          type_access = 'json_data.longRange.mean.data';
+        }
+
+        const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${type}`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error status: ${response.status}`);
+        }
+
+        const json_data = await response.json();
+        const streamflowData = eval(type_access);
+        const timestamps = streamflowData.map(item => item.validTime);
+        const flowValues = streamflowData.map(item => item.flow);
+
+        const tableElement = document.getElementById('timeseries-datatable');
+        tableElement.style.display = 'block';
+        const tableBody = tableElement.getElementsByTagName('tbody')[0];
+
+        if (tried > 0) {
+          tableBody.innerHTML = '';
+        }
+
+        streamflowData.forEach(item => {
+  const row = tableBody.insertRow();
+  row.insertCell().textContent = item.validTime;
+  row.insertCell().textContent = item.flow ? parseFloat(item.flow).toFixed(2) : "N/A";
+});
+
+// Get threshold value for the current reach, set a default if not found
+    const thresholdValue = reachThresholds[reachId] || "N/A";
+
+        chart.data.labels = timestamps;
+        chart.data.datasets[0].data = flowValues;
+        chart.data.datasets[1].data = timestamps.map(() => thresholdValue); // Add threshold line data
+        chart.update();
+        chartElement.style.display = 'block';
+        tried += 1;
+      } catch (error) {
+        console.error('Error fetching or processing data:', error);
+      }
+    }
+</script>
+
+</body>
+</html>
