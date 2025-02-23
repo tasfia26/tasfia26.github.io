@@ -346,17 +346,16 @@ var Layer9090922 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/H
     Layer9090262.addTo(map);
     Layer9090922.addTo(map);
 
-
  // Add event listeners for the checkbox changes
-    document.getElementById('wsdCheckbox').addEventListener('change', function () {
+    document.getElementById('polygonNewCheckbox').addEventListener('change', function () {
         if (this.checked) {
-            wsdLayer.addTo(map);
+            PolygonNewLayer.addTo(map);
         } else {
-            map.removeLayer(wsdLayer);
+            map.removeLayer(PolygonNewLayer);
         }
     });
 
-    document.getElementById('ExportedReachCheckbox').addEventListener('change', function () {
+    document.getElementById('exportedReachCheckbox').addEventListener('change', function () {
         if (this.checked) {
             ExportedReachLayer.addTo(map);
         } else {
@@ -364,8 +363,15 @@ var Layer9090922 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/H
         }
     });
 
+    document.getElementById('exportedReachIDCheckbox').addEventListener('change', function () {
+        if (this.checked) {
+            ExportedReachIDLayer.addTo(map);
+        } else {
+            map.removeLayer(ExportedReachIDLayer);
+        }
+    });
 
-    document.getElementById('DukeProgreeStationPointCheckbox').addEventListener('change', function () {
+    document.getElementById('dukeProgreeStationPointCheckbox').addEventListener('change', function () {
         if (this.checked) {
             DukeProgreeStationPointLayer.addTo(map);
         } else {
