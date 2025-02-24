@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How it Works</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h1 {
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin: 0;
+            font-size: 2.5em;
+        }
+        h2 {
+            padding: 15px;
+            background-color: #555;
+            color: white;
+            margin: 0;
+            font-size: 2em;
+        }
+        h3 {
+            padding: 10px;
+            background-color: #777;
+            color: white;
+            margin: 0;
+            font-size: 1.5em;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: black;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            overflow-x: auto;
+        }
+        pre {
+            background-color: #222;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-x: auto;
+        }
+        code {
+            color: #f8f8f2;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>How The Code Works</h1>
+    <h2>Code for the Web Page that You can Use for Your Own Web Page </h2>
+
+    <div class="container">
+        <h3>Some CSS Styling for the Web Page</h3>
+        <pre><code>
+body {
+    background-color: #222; /* Dark background */
+    color: white;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+}
+
+.left-panel {
+    background: url('hydropower1.jpg') no-repeat center center/cover;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    min-height: 400px;
+}
+
+.right-panel {
+    background: #444;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+ul {
+    list-style-type: square;
+}
+
+h2 {
+    color: #ffcc00;
+}
+
+h3 {
+    color: #ff6600; /* A warm orange color */
+    font-size: 1.2rem; /* Adjusts the size to be a bit smaller */
+}
+
+h4 {
+    color: #66ffcc;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+    margin-top: 20px;
+}
+
+.checkbox-container {
+    background: white;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+}
+
+.checkbox-container label {
+    margin-left: 5px;
+}
+
+.contact-info {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.contact-info p {
+    margin: 5px 0;
+}
+
+.contact-info i {
+    color: #ffcc00;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+select {
+    padding: 5px;
+    margin: 10px;
+}
+
+table {
+    width: 60%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    background-color: #333;
+    text-align: center;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #555;
+    text-align: center;
+    color: white;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #444;
+}
+
+tr:nth-child(odd) {
+    background-color: #555;
+}
+
+tr:hover {
+    background-color: #666;
+}
+
+.chart-container {
+    border: 2px solid #66ffcc;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f1f1f1;
+    max-width: 90%;
+    margin: auto;
+}
+        </code></pre>
+    </div>
+
+    <div class="container">
+        <h3>Leaflet Map Code for the Interactive Map</h3>
+        <pre><code>
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"&gt;
+&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" /&gt;
+&lt;script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;
+        </code></pre>
+    </div>
+
+<div class="container">
+        <h3>Adding OpenStreetMap Base Layer</h3>
+        <p>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        <p>maxZoom: 19,</p>
+        <p>attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'</p>
+    <p>}).addTo(map);</p>
+    </div>
+
+
+<div class="container">
+        <h3>HydroShare WMS Layers in the Map</h3>
+        <p>var wsdLayer = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-8a063c464de94811a011e052ec38a9e6/wms', { </p>
+        <p>layers: 'HS-8a063c464de94811a011e052ec38a9e6:wsd',</p>
+        <p>format: 'image/png', </p>
+        <p>transparent: true</p>
+    <p> });</p>
+	<p></p>
+	<p>Here, in <b>"HS-8a063c464de94811a011e052ec38a9e6:wsd"</b>, <b>"8a063c464de94811a011e052ec38a9e6"</b> is my HydroShare Resource ID and <b>"wsd"</b> is the Layer I want to see in the Map (You can change as your preferences). </p> 
+    </div>
+
+<div class="container">
+        <h3>Forecast Retrieving from the National Water Model Forecast API</h3>
+        <pre><code>
+function getForecastFromButton(reachId) {
+    const type = document.getElementById('ForecastType').value;
+    getForecast(reachId, type);
+}
+
+function getForecastFromDropdown(type) {
+    getForecast(current_reach, type);
+}
+
+async function getForecast(reachId, type) {
+    try {
+        current_reach = reachId;
+        let type_access;
+        if (type === 'short_range') {
+            type_access = 'json_data.shortRange.series.data';
+        } else if (type === 'medium_range') {
+            type_access = 'json_data.mediumRange.mean.data';
+        } else {
+            type_access = 'json_data.longRange.mean.data';
+        }
+
+        const apiUrl = `https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=${type}`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error status: ${response.status}`);
+        }
+
+        const json_data = await response.json();
+        const streamflowData = eval(type_access);
+        const timestamps = streamflowData.map(item => item.validTime);
+        const flowValues = streamflowData.map(item => item.flow);
+
+        const tableElement = document.getElementById('timeseries-datatable');
+        tableElement.style.display = 'block';
+        const tableBody = tableElement.getElementsByTagName('tbody')[0];
+
+        if (tried > 0) {
+            tableBody.innerHTML = '';
+        }
+
+        streamflowData.forEach(item => {
+            const row = tableBody.insertRow();
+            row.insertCell().textContent = item.validTime;
+            row.insertCell().textContent = item.flow ? parseFloat(item.flow).toFixed(2) : "N/A";
+        });
+
+    } catch (error) {
+        console.error('Error fetching forecast:', error);
+    }
+}
+        </code></pre>
+		
+		<p>You can use this code to fetch forecast for your desired Reach ID and use it for different purposes.</p>
+    </div>
+
+
+</body>
+</html>
