@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -206,7 +203,9 @@ tr:hover {
             <!-- Layer Control Checkboxes -->
             <div class="checkbox-container">
                 <strong>Toggle Layers:</strong><br>
+                
                 <input type="checkbox" id="exportedReachCheckbox" checked> <label for="exportedReachCheckbox">ExportedReach Layer</label><br>
+                
                 <input type="checkbox" id="dukeProgreeStationPointCheckbox" checked> <label for="dukeProgreeStationPointCheckbox">Duke Progress Station Point Layer</label><br>
             </div>
         </div>
@@ -337,13 +336,7 @@ var Layer9090922 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/H
     
 
  // Add event listeners for the checkbox changes
-    document.getElementById('polygonNewCheckbox').addEventListener('change', function () {
-        if (this.checked) {
-            PolygonNewLayer.addTo(map);
-        } else {
-            map.removeLayer(PolygonNewLayer);
-        }
-    });
+    
 
     document.getElementById('exportedReachCheckbox').addEventListener('change', function () {
         if (this.checked) {
@@ -353,13 +346,7 @@ var Layer9090922 = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/H
         }
     });
 
-    document.getElementById('exportedReachIDCheckbox').addEventListener('change', function () {
-        if (this.checked) {
-            ExportedReachIDLayer.addTo(map);
-        } else {
-            map.removeLayer(ExportedReachIDLayer);
-        }
-    });
+    
 
     document.getElementById('dukeProgreeStationPointCheckbox').addEventListener('change', function () {
         if (this.checked) {
