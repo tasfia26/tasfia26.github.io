@@ -137,6 +137,11 @@ tr:hover {
   margin: auto;               /* Center the chart */
 }
 
+.neon {
+            font-weight: bold;
+            color: #39ff14; /* Light neon green */
+            text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 20px #39ff14;
+        }
 
     </style>
 </head>
@@ -147,14 +152,15 @@ tr:hover {
         <!-- Left Panel -->
         <div class="col-md-4 left-panel">
             <div class="text-center">
-                <img src="image.png" alt="My Picture" class="profile-img">
+                <img src="your-picture.jpg" alt="My Picture" class="profile-img">
             </div>
             <h3 class="text-center mt-3">Tasfia Mahjarin</h3>
             <ul class="mt-3">
-                <li>GIS Researcher</li>
+                <li>Country: Bangladesh</li>
                 <li>Graduate Student at BYU</li>
-                <li>Interested in Web Mapping</li>
-                <li>Learning EPANET & HydroShare</li>
+                <li>Interested in Hydrology and Hydroinformatics</li>
+                <li>Learning Python</li>
+				<li>Want to know More About Me:<a href="CE514.html" target="_blank"> Tasfia's CE-514 Index.</li>. 
             </ul>
 
             <!-- Contact Information -->
@@ -183,30 +189,33 @@ tr:hover {
         <h3>4. Drought and Low-Flow Management</h3>
         <p>Long-term forecasts assist in conserving water storage and planning for drought conditions.</p>
 
-        <h3>5. Environmental and Regulatory Compliance</h3>
-        <p>Hydropower plants can use NWM data to maintain minimum environmental flows and comply with regulations.</p>
 
-        <h3>6. Dam Safety and Infrastructure Protection</h3>
+        <h3>5. Dam Safety and Infrastructure Protection</h3>
         <p>Forecasts allow operators to assess risks to dam structures and take preventive actions.</p>
 
-        <h3>7. Hydropower Expansion and Planning</h3>
+        <h3>6. Hydropower Expansion and Planning</h3>
         <p>Historical and predicted water availability trends from the NWM support feasibility studies for new hydropower projects.</p>
             <h4>Problem Statement</h4>
             <p>Duke Energy is expanding their area and recently, established a new Duke Progress Station in Kingstree,South Carolina. Their main target is to generate electricity from hydropower. There are several reaches that can contribute to the electricity generation. Three reaches from the list below are contributing mainly for the power generation, which are 9090136, 9090262, and 9090922.</p>
             <h4>Data Used, Warnings, and How to use this Webpage</h4>
-            <p><b>Data Used:</b> The watershed here has been extracted from StreamsStats, the Duke Progress Station Location has been found from Google Map, and the Reaches have been extracted from NWM API and ArcGIS Pro.</p>
-          <p><b>Data Representation:</b> The watershed/polygon boundary in grey represents the boundary around the Duke Progress Station surrounding the reaches, which can be used for the used for the hydropower electricity generation. The blue line are representating the streams that is contributing to the electricity generation, and the red point is the location of the Duke Progress Station.</p>
-<p><b>How to Use This Webpage:</b> You can see the Location of the Area around the Duke Power Station in the Interactive Map. You can also see the streams contributing to the station, and the location of it.
+            <p><b>Data Used:</b></p>
+			<p>The watershed here has been extracted from StreamsStats, the Duke Progress Station Location has been found from Google Map, and the Reaches have been extracted from NWM API and ArcGIS Pro.</p>
+          <p><b>Data Representation:</b></p>
+		  <p>The watershed/polygon boundary in grey represents the boundary around the Duke Progress Station surrounding the reaches, which can be used for the used for the hydropower electricity generation. The blue line are representating the streams that is contributing to the electricity generation, and the red point is the location of the Duke Progress Station.</p>
+<p><b>How to Use This Webpage:</b></p>
+<p> You can see the Location of the Area around the Duke Power Station in the Interactive Map. You can also see the streams contributing to the station, and the location of it.
 There is a Toggle Layer under the Interactive Map. If you uncheck the boxes from the Toggle layer you will not see layers. For example, if you uncheck the "Reach Layer" you will not see the reach layer. </p>
 	<p>Under the Toggle Layer, you will see the Reach ID, which are all the streams contributing to the electricity generation. If you click on any Reach ID, you see the reach on the map (if the Reach Layer is unchecked).Also, you will be able to see the table and the chart for the Reach you selected. Moreover, you can also select the Forecast Range from the Drop Down.</p>
-	<p><b>Short Range:</b>18 hours</p>	
-        <p><b>Medium Range:</b>8-10 days</p>
-	<p><b>Long Range:</b>30 days</p>
+	<p><span class="neon">Short Range:</span> 18 hours</p>
+    <p><span class="neon">Medium Range:</span> 8-10 days</p>
+    <p><span class="neon">Long Range:</span> 30 days</p>
 	<p>The chart for each of the Forecast has a Streamflow Forecast line from National Water Model and a Threshold line. The threshold line represents if the streamflow exceeds the threshold line, that portion is mainly contributing for the electricity generation. The portion where it does not exceed the threshold, that portion does not contribute for the exlectricity generation.</p>
 	<p>The Forecast that is fetching for the reaches are from the National Water Model API. <a href="https://water.noaa.gov/" target="_blank">Click to know more.</a></p>	
-        <p><b>Warning:</b>This webpage is created for CE - 514 class purpose. Hence, all the results may not be legitimate. </p>
+        <p><b>Warning:</b></p>
+		<p>This webpage is created for CE - 514 class purpose. Hence, all the results may not be legitimate. </p>
 <h4>More About the Webpage</h4>
-		
+		<p>If you want to know more about the Web Page, How I build the Page, and the Documentation, then click <a href="documentationforprojectv7.html" target="_blank">Web Page Documentation.</a></p>
+		<p>Also, if you want to know about the source code, Click <a href="codeforpriojectv7.html" target="_blank">Source Code.</a></p>
 		
             <!-- Map Section -->
             <h4>Interactive Web Map</h4>
