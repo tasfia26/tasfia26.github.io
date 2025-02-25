@@ -227,7 +227,7 @@ There is a Toggle Layer under the Interactive Map. If you uncheck the boxes from
                 
                 <input type="checkbox" id="exportedReachCheckbox" checked> <label for="exportedReachCheckbox">Reach Layer</label><br>
                 
-                <input type="checkbox" id="dukeProgreeStationPointCheckbox" checked> <label for="dukeProgreeStationPointCheckbox">Duke Progress Station Point Layer</label><br>
+                <input type="checkbox" id="dukeProgreeStationPointCheckbox" checked> <label for="dukeProgreeStationPointCheckbox">Duke Energy Progress Station Point Layer</label><br>
             </div>
         </div>
     </div>
@@ -573,6 +573,12 @@ function individualReachOnMap(reachId) {
         console.error('Error fetching or processing data:', error);
       }
     }
+
+	var popup = L.popup()
+    .setLatLng([33.6651881, -79.8181014]) // Set lat/lon for Duke Progress Station
+    .setContent("<b>Duke Enerygy Progress Station in South Carolina</b><br>Location: 33.6651881, -79.8181014")
+    .openOn(map); // Opens the popup automatically
+
 </script>
 
 </body>
